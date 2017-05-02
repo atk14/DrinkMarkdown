@@ -77,8 +77,10 @@ class DrinkMarkdownPostfilter {
 		},$content);
 		$content = substr($content,1); // the first space
 
-		$replace_back = array_combine(array_values($replace_ar),array_keys($replace_ar));
-		$content = EasyReplace($content,$replace_back);
+		if($replace_ar){
+			$replace_back = array_combine(array_values($replace_ar),array_keys($replace_ar));
+			$content = EasyReplace($content,$replace_back);
+		}
 
 		// Iobjects
 		preg_match_all('/<p>\[#(\d+)[^\]]*\]<\/p>/',$content,$matches);
