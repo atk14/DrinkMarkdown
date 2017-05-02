@@ -11,7 +11,7 @@ class DrinkMarkdownPostfilter {
 		$this->table_class = $options["table_class"];
 	}
 
-	function filter($content){
+	function filter($content,$transformer){
 		// Html is being purified
 		$tmp_dir = TEMP.(TEST ? "/test" : "")."/drink_markdown/html_purifier/";
 		if(!file_exists($tmp_dir)){ Files::MkDir($tmp_dir); }

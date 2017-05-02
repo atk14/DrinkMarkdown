@@ -11,13 +11,39 @@ class DrinkMarkdown{
 		$this->postfilter = $options["postfilter"];
 	}
 
-	function transform($raw){
-		if($this->prefilter){ $raw = $this->prefilter->filter($raw); }
+	/**
+	 * $dm = new DrinkMarkdown();
+	 * $html = $dm->transform($markdown_text);
+	 */
+	function transform($markdown){
+		if($this->prefilter){ $markdown = $this->prefilter->filter($markdown,$this); }
 
-		$out = Michelf\MarkdownExtra::defaultTransform($raw);
+		$html = Michelf\MarkdownExtra::defaultTransform($markdown);
 
-		if($this->postfilter){ $out = $this->postfilter->filter($out); }
+		if($this->postfilter){ $html = $this->postfilter->filter($html,$this); }
 
-		return $out;
+		return $html;
+	}
+
+	/**
+	 * $source = $this->formatSourceCode($raw_source,array("lang" => "php"));
+	 */
+	function formatSourceCode($source,$options = array()){
+		$options += array(
+			"lang" => ""
+		);
+
+		if(strlen($options["lang"])){
+			$geshi = new GeSHi($source, $options["lang"]);
+			$geshi->enable_keyword_links(false);
+			$geshi->set_overall_style("");
+			$geshi->enable_classes(false);
+			$source = $geshi->parse_code();
+
+			$source = preg_replace('/^<pre class="[^"]+"/','<pre',$source); // '<pre class="javascript">' -> '<pre>'
+		}else{
+			$source = '<pre><code>'.htmlentities($source).'</code></pre>';
+		}
+		return $source;
 	}
 }
