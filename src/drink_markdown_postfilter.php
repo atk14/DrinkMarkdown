@@ -3,7 +3,7 @@ class DrinkMarkdownPostfilter {
 
 	var $table_class = "";
 
-	function __construct($options = []){
+	function __construct($options = array()){
 		$options += array(
 			"table_class" => "table table-bordered table-hover",
 		);
