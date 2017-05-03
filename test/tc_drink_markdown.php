@@ -3,7 +3,7 @@ class TcDrinkMarkdown extends TcBase{
 
 	function test(){
 		$dm = new DrinkMarkdown();
-		
+
 		$this->assertEquals('<p>Hello World!</p>',$dm->transform('Hello World!'));
 
 		// Links
@@ -18,6 +18,13 @@ or <a href="mailto:we@earth.net">we@earth.net</a></p>',$dm->transform("Contact a
 		$this->assertEquals('<h1><center>Title</center></h1>',$dm->transform('# <center>Title</center>'));
 
 		$this->assertEquals("<center>\n\n<p>Centered text block</p>\n\n</center>",$dm->transform("<center>\n\nCentered text block\n\n</center>"));
+
+		// Empty documents
+
+		$this->assertEquals('',$dm->transform(''));
+		$this->assertEquals('',$dm->transform(' '));
+		$this->assertEquals('',$dm->transform("\n\n\n\n\n"));
+		$this->assertEquals('',$dm->transform("\n \n \n \n \n"));
 
 		// HTML table
 
