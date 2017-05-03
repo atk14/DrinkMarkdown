@@ -93,5 +93,33 @@ Paragraph #2
 <p>Paragraph #2</p>');
 
 		$this->assertEquals($result,$dm->transform($src));
+
+		// HTML Purifier
+
+		$src = 'Please <a href="http://www.atk14.net/" class="link" onclick="alert(\'You have clicked!\');">click here</a>';
+		$result = '<p>Please <a href="http://www.atk14.net/" class="link">click here</a></p>'; // no onclick attribute!
+		$this->assertEquals($result,$dm->transform($src));
+
+		$src = 'Not <b><em>well</b></em> formatted!';
+		$result = '<p>Not <b><em>well</em></b> formatted!</p>'; // well formatted!
+		$this->assertEquals($result,$dm->transform($src));
+
+		$src = 'XSS? <script type="text/javascript">alert("xss");</script>';
+		$result = '<p>XSS? </p>'; // no <script> tag
+		$this->assertEquals($result,$dm->transform($src));
+
+		$src = trim('
+<html>
+
+Hell Yeah!
+
+</html>');
+		$result = '
+<p></p>
+
+<p>Hell Yeah!</p>
+
+<p></p>';
+		$this->assertEquals(trim($result),trim($dm->transform($src))); // no <html> element
 	}
 }
