@@ -15,6 +15,17 @@ Just use the Composer:
     $ cd path/to/your/atk14/project/
     $ composer require atk14/drink-markdown dev-master
 
+Usage
+-----
+
+    $dm = new DrinkMarkdown(array(
+      "table_class" => "table", // the CSS class for table, default is "table table-bordered table-hover"
+      "html_purification_enabled" => true, // default is true
+      "temp_dir" => "/path/to/temp", // default is constant TEMP or sys_get_temp_dir()
+    ));
+
+    $html = $dm->transform($markdown);
+
 License
 -------
 

@@ -3,17 +3,25 @@ class DrinkMarkdown{
 
 	function __construct($options = array()){
 		$options += array(
-			"prefilter" => new DrinkMarkdownPrefilter(),
-			"postfilter" => new DrinkMarkdownPostfilter(),
+			"prefilter" => null,
+			"postfilter" => null,
 		);
 
-		$this->prefilter = $options["prefilter"];
-		$this->postfilter = $options["postfilter"];
+		$prefilter = $options["prefilter"];
+		$postfilter = $options["postfilter"];
+
+		unset($options["prefilter"]);
+		unset($options["postfilter"]);
+
+		$this->prefilter = $prefilter ? $prefilter : new DrinkMarkdownPrefilter($options);
+		$this->postfilter = $postfilter ? $postfilter : new DrinkMarkdownPostfilter($options);
 	}
 
 	/**
-	 * $dm = new DrinkMarkdown();
-	 * $html = $dm->transform($markdown_text);
+	 * Performs the transformation of a Markdown document to a HTML document
+	 *
+	 *	$dm = new DrinkMarkdown();
+	 *	$html = $dm->transform($markdown_text);
 	 */
 	function transform($markdown){
 		if($this->prefilter){ $markdown = $this->prefilter->filter($markdown,$this); }
@@ -26,7 +34,8 @@ class DrinkMarkdown{
 	}
 
 	/**
-	 * $source = $this->formatSourceCode($raw_source,array("lang" => "php"));
+	 *
+	 *	$source = $this->formatSourceCode($raw_source,array("lang" => "php"));
 	 */
 	function formatSourceCode($source,$options = array()){
 		$options += array(

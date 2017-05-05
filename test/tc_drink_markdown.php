@@ -26,7 +26,40 @@ or <a href="mailto:we@earth.net">we@earth.net</a></p>',$dm->transform("Contact a
 		$this->assertEquals('',$dm->transform("\n\n\n\n\n"));
 		$this->assertEquals('',$dm->transform("\n \n \n \n \n"));
 
-		// HTML table
+		// Markdown tables
+
+		$dm2 = new DrinkMarkdown(array("table_class" => ""));
+
+		$src = '
+Paragraph #1
+
+| | |
+|-|-|
+|a|b|
+|c|d|
+
+Paragraph #2
+';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<table class="table table-bordered table-hover"><thead></thead><tbody><tr><td>a</td>
+  <td>b</td>
+</tr><tr><td>c</td>
+  <td>d</td>
+</tr></tbody></table><p>Paragraph #2</p>');
+		$result2 = trim('
+<p>Paragraph #1</p>
+
+<table><thead></thead><tbody><tr><td>a</td>
+  <td>b</td>
+</tr><tr><td>c</td>
+  <td>d</td>
+</tr></tbody></table><p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+		$this->assertEquals($result2,$dm2->transform($src));
+
+		// HTML tables
 
 		$src = '
 Paragraph #1
@@ -103,17 +136,25 @@ Paragraph #2
 
 		// HTML Purifier
 
+		$dm2 = new DrinkMarkdown(array("html_purification_enabled" => false));
+
 		$src = 'Please <a href="http://www.atk14.net/" class="link" onclick="alert(\'You have clicked!\');">click here</a>';
-		$result = '<p>Please <a href="http://www.atk14.net/" class="link">click here</a></p>'; // no onclick attribute!
-		$this->assertEquals($result,$dm->transform($src));
+		$result_purified = '<p>Please <a href="http://www.atk14.net/" class="link">click here</a></p>'; // no onclick attribute!
+		$result_not_purified = '<p>Please <a href="http://www.atk14.net/" class="link" onclick="alert(\'You have clicked!\');">click here</a></p>';
+		$this->assertEquals($result_purified,$dm->transform($src));
+		$this->assertEquals($result_not_purified,$dm2->transform($src));
 
 		$src = 'Not <b><em>well</b></em> formatted!';
-		$result = '<p>Not <b><em>well</em></b> formatted!</p>'; // well formatted!
-		$this->assertEquals($result,$dm->transform($src));
+		$result_purified = '<p>Not <b><em>well</em></b> formatted!</p>'; // well formatted!
+		$result_not_purified = '<p>Not <b><em>well</b></em> formatted!</p>';
+		$this->assertEquals($result_purified,$dm->transform($src));
+		$this->assertEquals($result_not_purified,$dm2->transform($src));
 
 		$src = 'XSS? <script type="text/javascript">alert("xss");</script>';
-		$result = '<p>XSS? </p>'; // no <script> tag
-		$this->assertEquals($result,$dm->transform($src));
+		$result_purified = '<p>XSS? </p>'; // no <script> tag
+		$result_not_purified = '<p>XSS? <script type="text/javascript">alert("xss");</script></p>'; //
+		$this->assertEquals($result_purified,$dm->transform($src));
+		$this->assertEquals($result_not_purified,$dm2->transform($src));
 
 		$src = trim('
 <html>
@@ -121,12 +162,20 @@ Paragraph #2
 Hell Yeah!
 
 </html>');
-		$result = '
+		$result_purified = '
 <p></p>
 
 <p>Hell Yeah!</p>
 
 <p></p>';
-		$this->assertEquals(trim($result),trim($dm->transform($src))); // no <html> element
+
+		$result_not_purified = '
+<p><html></p>
+
+<p>Hell Yeah!</p>
+
+<p></html></p>';
+		$this->assertEquals(trim($result_purified),trim($dm->transform($src))); // no <html> element
+		$this->assertEquals(trim($result_not_purified),trim($dm2->transform($src)));
 	}
 }

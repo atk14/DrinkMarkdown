@@ -1,39 +1,42 @@
 <?php
 class DrinkMarkdownPostfilter {
 
-	var $table_class = "";
-
 	function __construct($options = array()){
 		$options += array(
 			"table_class" => "table table-bordered table-hover",
+      "html_purification_enabled" => true,
+      "temp_dir" => defined(TEMP) ? TEMP : sys_get_temp_dir(),
 		);
 
-		$this->table_class = $options["table_class"];
+    $this->options = $options;
 	}
 
 	function filter($content,$transformer){
-		// Html is being purified
-		$tmp_dir = TEMP.(TEST ? "/test" : "")."/drink_markdown/html_purifier/";
-		if(!file_exists($tmp_dir)){ Files::MkDir($tmp_dir); }
-		$html_purifier_config = array(
-			"Core.Encoding" => 'UTF-8',
-			//"AutoFormat.AutoParagraph" => true,
-			//"HTML.Doctype" => 'XHTML 1.0 Transitional',
-			"Cache.SerializerPath" => $tmp_dir,
-			//"HTML.Allowed" => 'h1,h2,h3,h4,p,b,br,a[href],i,img[src|alt|width|height]',
-			"Attr.EnableID" => true,
-		);
-		$config = HTMLPurifier_Config::createDefault();
-		foreach($html_purifier_config as $k => $v){
-			$config->set($k,$v);
-		}
-		$purifier = new HTMLPurifier($config);
-		$content = $purifier->purify($content); // TODO: purifikace je nutna pouza u komentaru uzivatelu
-
 		$replace_ar = array();
 
 		$uniqid = uniqid();
 		$counter = 0;
+
+
+    if($this->options["html_purification_enabled"]){
+      // Html is being purified
+      $tmp_dir = $this->options["temp_dir"].((defined("TEST") && TEST) ? "/test" : "")."/drink_markdown/html_purifier/";
+      if(!file_exists($tmp_dir)){ Files::MkDir($tmp_dir); }
+      $html_purifier_config = array(
+        "Core.Encoding" => 'UTF-8',
+        //"AutoFormat.AutoParagraph" => true,
+        //"HTML.Doctype" => 'XHTML 1.0 Transitional',
+        "Cache.SerializerPath" => $tmp_dir,
+        //"HTML.Allowed" => 'h1,h2,h3,h4,p,b,br,a[href],i,img[src|alt|width|height]',
+        "Attr.EnableID" => true,
+      );
+      $config = HTMLPurifier_Config::createDefault();
+      foreach($html_purifier_config as $k => $v){
+        $config->set($k,$v);
+      }
+      $purifier = new HTMLPurifier($config);
+      $content = $purifier->purify($content); // TODO: purifikace je nutna pouza u komentaru uzivatelu
+    }
 
 		// TODO: refactor the mess
 
@@ -76,8 +79,8 @@ class DrinkMarkdownPostfilter {
 		//var_dump($GLOBALS["wiki_replaces"]);
 
 		// Tables
-		if($this->table_class){
-			$content = preg_replace('/<table>/','<table class="'.htmlentities($this->table_class,ENT_COMPAT).'">',$content);
+		if($this->options["table_class"]){
+			$content = preg_replace('/<table>/','<table class="'.htmlentities($this->options["table_class"],ENT_COMPAT).'">',$content);
 		}
 		$content = preg_replace('/<thead>\s*<tr>(\s*<th[^>]*>\s*<\/th>\s*){1,}<\/tr>\s*<\/thead>/s','<thead></thead>',$content); // Removing empty headers
 
