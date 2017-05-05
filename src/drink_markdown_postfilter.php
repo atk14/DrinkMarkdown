@@ -46,7 +46,7 @@ class DrinkMarkdownPostfilter {
 			$counter++;
 		}
 
-		preg_match_all('/(<pre><code>.*?<\/code><\/pre>)/s',$content,$matches);
+		preg_match_all('/(<pre>.*?<\/pre>)/s',$content,$matches);
 		foreach($matches[1] as $str){
 			$replacement = "%link_replace_{$counter}_$uniqid%";
 			$replace_ar[$str] = $replacement;
