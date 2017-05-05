@@ -4,13 +4,19 @@ class DrinkMarkdownPrefilter {
 	function filter($raw,$transformer){
 		$GLOBALS["wiki_replaces"] = array();
 
+		// We only accept LF (\n) as line endings
+		$raw = EasyReplace($raw,array(
+			"\r\n" => "\n",
+			"\n\r" => "\n",
+		));
+
 		$raw = "\n$raw\n";
 		
 		$replaces = array();
 		$uniqid = uniqid();
 
 		// Source codes wrapped in ```...```
-		preg_match_all('/[\n\r]```([ a-z0-9]*)[\n\r](.*?)\n```[\n\r]/s',$raw,$matches);
+		preg_match_all('/[\n\r]```([ a-z0-9]*)\n(.*?)\n```\s*\n/s',$raw,$matches);
 		for($i=0;$i<sizeof($matches[0]);$i++){
 			$snippet = $matches[0][$i];
 			$source = $transformer->formatSourceCode($matches[2][$i],array("lang" => $matches[1][$i]));
