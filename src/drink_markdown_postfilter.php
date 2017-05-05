@@ -55,27 +55,9 @@ class DrinkMarkdownPostfilter {
 
 		//
 		$content = EasyReplace($content,$replace_ar);
+
 		$lf = new LinkFinder();
 		$content = $lf->process($content,array("escape_html_entities" => false));
-
-		// before the @mentions processing we must hide all links built by LinkFinder
-		preg_match_all('/(<a\s[^>]*>.*?<\/a>)/',$content,$matches);
-		foreach($matches[1] as $link){
-			$replacement = "%link_replace_{$counter}_$uniqid%";
-			$replace_ar[$link] = $replacement;
-			$counter++;
-		}
-		$content = EasyReplace($content,$replace_ar);
-
-		// @mentions
-		$content = " $content";
-		$content = preg_replace_callback('/(\s)@([a-z0-9.-]{1,50})\b/i',function($matches){ // see app/forms/users/create_new_form.php
-			if($user = User::FindByLogin($matches[2])){
-				return $matches[1].sprintf('<a href="%s">@%s</a>',Atk14Url::BuildLink(array("namespace" => "", "controller" => "users", "action" => "detail", "id" => $user)),$user->getLogin());
-			}
-			return $matches[0];
-		},$content);
-		$content = substr($content,1); // the first space
 
 		if($replace_ar){
 			$replace_back = array_combine(array_values($replace_ar),array_keys($replace_ar));
