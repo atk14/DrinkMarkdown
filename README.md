@@ -19,7 +19,7 @@ Usage
 -----
 
     $dm = new DrinkMarkdown(array(
-      "table_class" => "table", // the CSS class for table, default is "table table-bordered table-hover"
+      "table_class" => "table", // the CSS class for tables, default is "table table-bordered table-hover"
       "html_purification_enabled" => true, // default is true
       "temp_dir" => "/path/to/temp", // default is constant TEMP or sys_get_temp_dir()
     ));
