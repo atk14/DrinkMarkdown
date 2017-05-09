@@ -177,5 +177,40 @@ Hell Yeah!
 <p></html></p>';
 		$this->assertEquals(trim($result_purified),trim($dm->transform($src))); // no <html> element
 		$this->assertEquals(trim($result_not_purified),trim($dm2->transform($src)));
+
+		// Lists
+
+		$src = '
+Colors
+
+- red
+- blue
+- yellow';
+
+		$result = '
+<p>Colors</p>
+
+<ul><li>red</li>
+<li>blue</li>
+<li>yellow</li>
+</ul>';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '
+Colors
+- red
+- blue
+- yellow';
+
+		$result = '
+<p>Colors</p>
+
+<ul><li>red</li>
+<li>blue</li>
+<li>yellow</li>
+</ul>';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
 	}
 }

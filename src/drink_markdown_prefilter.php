@@ -37,6 +37,19 @@ class DrinkMarkdownPrefilter {
 			$GLOBALS["wiki_replaces"]["<p>$placeholder</p>"] = $table;
 		}
 
+		// Adding empty line before a list when needed
+		//
+		//	Colors:   ->   Colors:
+		//	- red     ->
+		//	- blue    ->   - red
+		//	- green   ->   - blue
+		//	          ->   - green
+		//
+		// The line before the list (Colors:) should not end with space.
+		//
+		// TODO: Is this really a wished feature?
+		$raw = preg_replace('/(\n[^\n\*-][^\n]*[^ ])\n([\*-] {1,2}[^\s])/s',"\\1\n\n\\2",$raw);
+
 		$raw = EasyReplace($raw,$replaces);
 
 		return $raw;
