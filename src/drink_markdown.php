@@ -1,6 +1,8 @@
 <?php
 class DrinkMarkdown{
 
+	var $replaces = array();
+
 	function __construct($options = array()){
 		$options += array(
 			"prefilter" => null,

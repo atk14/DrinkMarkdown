@@ -72,11 +72,10 @@ class DrinkMarkdownPostfilter {
 		foreach($matches[1] as $i => $id){
 			if(!$iobject = Iobject::GetInstanceById($id)){ continue; }
 
-			$GLOBALS["wiki_replaces"][$matches[0][$i]] = $iobject->getHtmlSource();
+			$transformer->replaces[$matches[0][$i]] = $iobject->getHtmlSource();
 		}
 
-		$content = strtr($content,$GLOBALS["wiki_replaces"]);
-		//var_dump($GLOBALS["wiki_replaces"]);
+		$content = strtr($content,$transformer->replaces);
 
 		// Tables
 		if($this->options["table_class"]){

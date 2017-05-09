@@ -2,7 +2,7 @@
 class DrinkMarkdownPrefilter {
 
 	function filter($raw,$transformer){
-		$GLOBALS["wiki_replaces"] = array();
+		$transformer->replaces = array();
 
 		// We only accept LF (\n) as line endings
 		$raw = EasyReplace($raw,array(
@@ -23,7 +23,7 @@ class DrinkMarkdownPrefilter {
 			$placeholder = "source.$i.$uniqid";
 			$replaces[$snippet] = "\n\n$placeholder\n\n";
 
-			$GLOBALS["wiki_replaces"]["<p>$placeholder</p>"] = $source;
+			$transformer->replaces["<p>$placeholder</p>"] = $source;
 		}
 
 		// HTML tables
@@ -34,7 +34,7 @@ class DrinkMarkdownPrefilter {
 			$placeholder = "table.$i.$uniqid";
 			$replaces[$snippet] = "\n\n$placeholder\n\n";
 			
-			$GLOBALS["wiki_replaces"]["<p>$placeholder</p>"] = $table;
+			$transformer->replaces["<p>$placeholder</p>"] = $table;
 		}
 
 		// Adding empty line before a list when needed
