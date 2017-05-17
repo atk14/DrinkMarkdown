@@ -85,6 +85,40 @@ Paragraph #2';
 <p>Paragraph #2</p>');
 		$this->assertEquals($result,$dm->transform($src));
 
+		$src = '
+Paragraph #1
+
+<div class="table-responsive">
+
+<table>
+  <tr>
+    <th>key2</th>
+    <td>val2</td>
+  </tr>
+</table>
+
+</div>
+
+Paragraph #2';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<div class="table-responsive">
+
+
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>key2</th>
+    <td>val2</td>
+  </tr>
+</table>
+
+
+</div>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
 		// Code
 
 		$src = '
