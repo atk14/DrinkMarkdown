@@ -34,7 +34,8 @@ class DrinkMarkdownPrefilter {
 			$placeholder = "table.$i.$uniqid";
 			$replaces[$snippet] = "\n\n$placeholder\n\n";
 			
-			$transformer->replaces["<p>$placeholder</p>"] = $table;
+			$transformer->replaces["<p>$placeholder</p>"] = $table; // <p>table.0.591c34cd0689f</p>
+			$transformer->replaces["$placeholder"] = $table; // <div class="table-responsive">table.0.591c34cd0689f</div>
 		}
 
 		// Adding empty line before a list when needed
