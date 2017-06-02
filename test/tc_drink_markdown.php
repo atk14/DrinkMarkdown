@@ -2,7 +2,7 @@
 class TcDrinkMarkdown extends TcBase{
 
 	function test(){
-		$dm = new DrinkMarkdown();
+		$dm = new DrinkMarkdown(array("table_class" => "table table-bordered table-hover"));
 
 		$this->assertEquals('<p>Hello World!</p>',$dm->transform('Hello World!'));
 

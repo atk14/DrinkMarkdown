@@ -3,16 +3,17 @@ class DrinkMarkdownPostfilter {
 
 	function __construct($options = array()){
 		$options += array(
-			"table_class" => "table table-bordered table-hover",
+			"table_class" => "table",
       "html_purification_enabled" => true,
       "temp_dir" => defined(TEMP) ? TEMP : sys_get_temp_dir(),
+			"iobjects_processing_enabled" => true,
+			"urlize_text" => true,
 		);
 
     $this->options = $options;
 	}
 
 	function filter($content,$transformer){
-		$replace_ar = array();
 
 		$uniqid = uniqid();
 		$counter = 0;
@@ -38,41 +39,37 @@ class DrinkMarkdownPostfilter {
       $content = $purifier->purify($content); // TODO: purifikace je nutna pouza u komentaru uzivatelu
     }
 
-		// TODO: refactor the mess
+		if($this->options["urlize_text"]){
+			// Converts all URL or email text to links
 
-		// URLs and emails in their plain forms are converted to links using LinkFinder
-		// At first we must hide existing links in the document
-		preg_match_all('/(<a\s[^>]*>.*?<\/a>)/',$content,$matches);
-		foreach($matches[1] as $link){
-			$replacement = "%link_replace_{$counter}_$uniqid%";
-			$replace_ar[$link] = $replacement;
-			$counter++;
+			$replace_ar = array();
+
+			// the conversion is not desired in <pre> blocks
+			preg_match_all('/(<pre>.*?<\/pre>)/s',$content,$matches);
+			foreach($matches[1] as $str){
+				$replacement = "%link_replace_{$counter}_$uniqid%";
+				$replace_ar[$str] = $replacement;
+				$counter++;
+			}
+			$content = EasyReplace($content,$replace_ar);
+
+			$lf = new LinkFinder();
+			$content = $lf->process($content,array("escape_html_entities" => false));
+
+			if($replace_ar){
+				$replace_back = array_combine(array_values($replace_ar),array_keys($replace_ar));
+				$content = EasyReplace($content,$replace_back);
+			}
 		}
 
-		preg_match_all('/(<pre>.*?<\/pre>)/s',$content,$matches);
-		foreach($matches[1] as $str){
-			$replacement = "%link_replace_{$counter}_$uniqid%";
-			$replace_ar[$str] = $replacement;
-			$counter++;
-		}
+		if($this->options["iobjects_processing_enabled"]){
+			// Iobjects
+			preg_match_all('/<p>\[#(\d+)[^\]]*\]<\/p>/',$content,$matches);
+			foreach($matches[1] as $i => $id){
+				if(!$iobject = Iobject::GetInstanceById($id)){ continue; }
 
-		//
-		$content = EasyReplace($content,$replace_ar);
-
-		$lf = new LinkFinder();
-		$content = $lf->process($content,array("escape_html_entities" => false));
-
-		if($replace_ar){
-			$replace_back = array_combine(array_values($replace_ar),array_keys($replace_ar));
-			$content = EasyReplace($content,$replace_back);
-		}
-
-		// Iobjects
-		preg_match_all('/<p>\[#(\d+)[^\]]*\]<\/p>/',$content,$matches);
-		foreach($matches[1] as $i => $id){
-			if(!$iobject = Iobject::GetInstanceById($id)){ continue; }
-
-			$transformer->replaces[$matches[0][$i]] = $iobject->getHtmlSource();
+				$transformer->replaces[$matches[0][$i]] = $iobject->getHtmlSource();
+			}
 		}
 
 		$content = strtr($content,$transformer->replaces);

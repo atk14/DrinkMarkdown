@@ -12,8 +12,15 @@ Installation
 
 Just use the Composer:
 
-    $ cd path/to/your/atk14/project/
-    $ composer require atk14/drink-markdown dev-master
+    cd path/to/your/atk14/project/
+    composer require atk14/drink-markdown dev-master
+
+Optionaly you can link (or copy & edit) helpers to your project.
+
+    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/block.markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/block.safe_markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.safe_markdown.php app/helpers/
 
 Usage
 -----
