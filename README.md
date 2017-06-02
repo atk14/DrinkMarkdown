@@ -44,7 +44,7 @@ If you have a trusted content:
 If you have an insecure content, e.g. a comment from a user
 
     {$comment|safe_markdown nofilter} {* or *}
-    {!comment|safe_markdown}
+    {!$comment|safe_markdown}
 
 License
 -------
