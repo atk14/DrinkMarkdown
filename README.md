@@ -33,6 +33,19 @@ Usage
 
     $html = $dm->transform($markdown);
 
+Usage in a ATK14 template
+-------------------------
+
+If you have a trusted content:
+
+    {$text|markdown nofilter} {* or *}
+    {!$text|markdown}
+
+If you have an insecure content, e.g. a comment from a user
+
+    {$comment|safe_markdown nofilter} {* or *}
+    {!comment|safe_markdown}
+
 License
 -------
 
