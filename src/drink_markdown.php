@@ -49,7 +49,7 @@ class DrinkMarkdown{
 			$geshi->enable_keyword_links(false);
 			$geshi->set_overall_style("");
 			$geshi->enable_classes(false);
-			$source = $geshi->parse_code();
+			$source = @$geshi->parse_code(); // There is an error in GeSHi: Undefined offset: 0 in /path/to/an/app/vendor/easybook/geshi/geshi.php:3500
 
 			$source = preg_replace('/^<pre class="[^"]+"/','<pre',$source); // '<pre class="javascript">' -> '<pre>'
 		}else{
