@@ -61,6 +61,7 @@ Paragraph #2
 
 		// HTML tables
 
+		// 1)
 		$src = '
 Paragraph #1
 
@@ -85,6 +86,57 @@ Paragraph #2';
 <p>Paragraph #2</p>');
 		$this->assertEquals($result,$dm->transform($src));
 
+		// 2)
+		$src = '
+Paragraph #1
+
+<table border="1" class="t">
+  <tr>
+    <th>key</th>
+    <td>val</td>
+  </tr>
+</table>
+
+Paragraph #2';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<table border="1" class="t table table-bordered table-hover">
+  <tr>
+    <th>key</th>
+    <td>val</td>
+  </tr>
+</table>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
+		// 3)
+		$src = '
+Paragraph #1
+
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>key</th>
+    <td>val</td>
+  </tr>
+</table>
+
+Paragraph #2';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>key</th>
+    <td>val</td>
+  </tr>
+</table>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
+		// 4)
 		$src = '
 Paragraph #1
 

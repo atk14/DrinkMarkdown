@@ -76,7 +76,14 @@ class DrinkMarkdownPostfilter {
 
 		// Tables
 		if($this->options["table_class"]){
-			$content = preg_replace('/<table>/','<table class="'.htmlentities($this->options["table_class"],ENT_COMPAT).'">',$content);
+			$content = preg_replace('/<table>/i','<table class="'.htmlentities($this->options["table_class"],ENT_COMPAT).'">',$content);
+			$table_class = $this->options["table_class"];
+			$content = preg_replace_callback('/(<table\b.*?\bclass=["\'])(.*?)(["\'])/i',function($matches) use ($table_class){
+				$current_class = " $matches[2] ";
+
+				if(strpos($current_class," $table_class ")===false){ return "$matches[1]$matches[2] $table_class$matches[3]"; }
+				return "$matches[1]$matches[2]$matches[3]";
+			},$content);
 		}
 		$content = preg_replace('/<thead>\s*<tr>(\s*<th[^>]*>\s*<\/th>\s*){1,}<\/tr>\s*<\/thead>/s','<thead></thead>',$content); // Removing empty headers
 
