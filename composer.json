@@ -16,11 +16,11 @@
                 "easybook/geshi": "1.0.8.*",
                 "michelf/php-markdown": "1.7.*",
                 "ezyang/htmlpurifier": "4.8.*",
-                "yarri/link-finder": "*"
+                "yarri/link-finder": "2.*",
+                "atk14/files": "1.*"
         },
         "require-dev": {
-                "phpunit/phpunit": "4.8.*",
-                "atk14/files": "*"
+                "phpunit/phpunit": "4.8.*"
         },
         "autoload": {
                 "classmap": ["src"]
