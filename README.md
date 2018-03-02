@@ -7,6 +7,17 @@ Originally it was developed for the project "Doctor Ink" (shortly "Drink").
 
 Beware! It is in alpha state. It has some interconnections to the ATK14 Framework thus it can't be easily used in other projects.
 
+Features
+--------
+
+DrinkMarkdown extends PHP Markdown Extra to:
+
+- automatically converting URL and email text to clickable links
+- providing optional HTML purification
+- providing source code syntax highlighting
+- table rendering improved
+- iobjects (to be explained)
+
 Installation
 ------------
 
