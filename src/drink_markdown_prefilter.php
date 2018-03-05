@@ -38,6 +38,17 @@ class DrinkMarkdownPrefilter {
 			$transformer->replaces["$placeholder"] = $table; // <div class="table-responsive">table.0.591c34cd0689f</div>
 		}
 
+		// Direct links to Iobjects
+		//
+		// [Click here to see the song]([#33 Video: Song]) -> [Click here to see the song](https://www.youtube.com/watch?v=OFY_mVSnr-8)
+		$raw = preg_replace_callback('/(?P<first_part>\[[^\]]+\]\()\[#(?P<iobject_id>\d+)[^\]]*\](?P<last_part>(|\s[^)]+)\))/',function($matches){
+			$iobject_id = $matches["iobject_id"];
+			if(!$iobject = Iobject::GetInstanceById($iobject_id)){
+				return $matches[0];
+			}
+			return $matches["first_part"].$iobject->getDetailUrl().$matches["last_part"];
+		},$raw);
+
 		// Adding empty line before a list when needed
 		//
 		//	Colors:   ->   Colors:
