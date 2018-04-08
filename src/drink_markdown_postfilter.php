@@ -4,13 +4,13 @@ class DrinkMarkdownPostfilter {
 	function __construct($options = array()){
 		$options += array(
 			"table_class" => "table",
-      "html_purification_enabled" => true,
-      "temp_dir" => defined(TEMP) ? TEMP : sys_get_temp_dir(),
+			"html_purification_enabled" => true,
+			"temp_dir" => defined(TEMP) ? TEMP : sys_get_temp_dir(),
 			"iobjects_processing_enabled" => true,
 			"urlize_text" => true,
 		);
 
-    $this->options = $options;
+		$this->options = $options;
 	}
 
 	function filter($content,$transformer){
