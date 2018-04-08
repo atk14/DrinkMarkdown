@@ -19,25 +19,25 @@ class DrinkMarkdownPostfilter {
 		$counter = 0;
 
 
-    if($this->options["html_purification_enabled"]){
-      // Html is being purified
-      $tmp_dir = $this->options["temp_dir"].((defined("TEST") && TEST) ? "/test" : "")."/drink_markdown/html_purifier/";
-      if(!file_exists($tmp_dir)){ Files::MkDir($tmp_dir); }
-      $html_purifier_config = array(
-        "Core.Encoding" => 'UTF-8',
-        //"AutoFormat.AutoParagraph" => true,
-        //"HTML.Doctype" => 'XHTML 1.0 Transitional',
-        "Cache.SerializerPath" => $tmp_dir,
-        //"HTML.Allowed" => 'h1,h2,h3,h4,p,b,br,a[href],i,img[src|alt|width|height]',
-        "Attr.EnableID" => true,
-      );
-      $config = HTMLPurifier_Config::createDefault();
-      foreach($html_purifier_config as $k => $v){
-        $config->set($k,$v);
-      }
-      $purifier = new HTMLPurifier($config);
-      $content = $purifier->purify($content); // TODO: purifikace je nutna pouza u komentaru uzivatelu
-    }
+		if($this->options["html_purification_enabled"]){
+			// Html is being purified
+			$tmp_dir = $this->options["temp_dir"].((defined("TEST") && TEST) ? "/test" : "")."/drink_markdown/html_purifier/";
+			if(!file_exists($tmp_dir)){ Files::MkDir($tmp_dir); }
+			$html_purifier_config = array(
+				"Core.Encoding" => 'UTF-8',
+				//"AutoFormat.AutoParagraph" => true,
+				//"HTML.Doctype" => 'XHTML 1.0 Transitional',
+				"Cache.SerializerPath" => $tmp_dir,
+				//"HTML.Allowed" => 'h1,h2,h3,h4,p,b,br,a[href],i,img[src|alt|width|height]',
+				"Attr.EnableID" => true,
+			);
+			$config = HTMLPurifier_Config::createDefault();
+			foreach($html_purifier_config as $k => $v){
+				$config->set($k,$v);
+			}
+			$purifier = new HTMLPurifier($config);
+			$content = $purifier->purify($content); // TODO: purifikace je nutna pouza u komentaru uzivatelu
+		}
 
 		if($this->options["urlize_text"]){
 			// Converts all URL or email text to links
