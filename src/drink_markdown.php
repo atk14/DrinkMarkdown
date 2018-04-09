@@ -3,6 +3,9 @@ class DrinkMarkdown{
 
 	var $replaces = array();
 
+	protected $prefilters = array();
+	protected $postfilters = array();
+
 	function __construct($options = array()){
 		$options += array(
 			"prefilter" => null,
@@ -15,8 +18,24 @@ class DrinkMarkdown{
 		unset($options["prefilter"]);
 		unset($options["postfilter"]);
 
-		$this->prefilter = $prefilter ? $prefilter : new DrinkMarkdownPrefilter($options);
-		$this->postfilter = $postfilter ? $postfilter : new DrinkMarkdownPostfilter($options);
+		$this->prefilters[] = $prefilter ? $prefilter : new DrinkMarkdownPrefilter($options);
+		$this->postfilters[] = $postfilter ? $postfilter : new DrinkMarkdownPostfilter($options);
+	}
+
+	function prependPrefilter($prefilter){
+		array_unshift($this->prefilters,$prefilter);
+	}
+
+	function appendPrefilter($prefilter){
+		$this->prefilters[] = $prefilter;
+	}
+
+	function prependPostfilter($postfilter){
+		array_unshift($this->postfilters,$postfilter);
+	}
+
+	function appendPostfilter($postfilter){
+		$this->postfilters[] = $postfilter;
 	}
 
 	/**
@@ -26,11 +45,15 @@ class DrinkMarkdown{
 	 *	$html = $dm->transform($markdown_text);
 	 */
 	function transform($markdown){
-		if($this->prefilter){ $markdown = $this->prefilter->filter($markdown,$this); }
+		foreach($this->prefilters as $prefilter){
+			$markdown = $prefilter->filter($markdown,$this);
+		}
 
 		$html = Michelf\MarkdownExtra::defaultTransform($markdown);
 
-		if($this->postfilter){ $html = $this->postfilter->filter($html,$this); }
+		foreach($this->postfilters as $postfilter){
+			$html = $postfilter->filter($html,$this);
+		}
 
 		return $html;
 	}
