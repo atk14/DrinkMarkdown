@@ -34,27 +34,4 @@ class DrinkMarkdown{
 
 		return $html;
 	}
-
-	/**
-	 *
-	 *	$source = $this->formatSourceCode($raw_source,array("lang" => "php"));
-	 */
-	function formatSourceCode($source,$options = array()){
-		$options += array(
-			"lang" => ""
-		);
-
-		if(strlen($options["lang"])){
-			$geshi = new GeSHi($source, $options["lang"]);
-			$geshi->enable_keyword_links(false);
-			$geshi->set_overall_style("");
-			$geshi->enable_classes(false);
-			$source = @$geshi->parse_code(); // There is an error in GeSHi: Undefined offset: 0 in /path/to/an/app/vendor/easybook/geshi/geshi.php:3500
-
-			$source = preg_replace('/^<pre class="[^"]+"/','<pre',$source); // '<pre class="javascript">' -> '<pre>'
-		}else{
-			$source = '<pre><code>'.htmlentities($source).'</code></pre>';
-		}
-		return $source;
-	}
 }

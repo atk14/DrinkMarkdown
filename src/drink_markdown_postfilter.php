@@ -1,5 +1,5 @@
 <?php
-class DrinkMarkdownPostfilter {
+class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 
 	function __construct($options = array()){
 		$options += array(

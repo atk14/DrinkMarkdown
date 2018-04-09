@@ -1,5 +1,5 @@
 <?php
-class DrinkMarkdownPrefilter {
+class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 
 	function filter($raw,$transformer){
 		$transformer->replaces = array();
@@ -19,7 +19,7 @@ class DrinkMarkdownPrefilter {
 		preg_match_all('/[\n\r]```([ a-z0-9]*)\n(.*?)\n```\s*\n/s',$raw,$matches);
 		for($i=0;$i<sizeof($matches[0]);$i++){
 			$snippet = $matches[0][$i];
-			$source = $transformer->formatSourceCode($matches[2][$i],array("lang" => $matches[1][$i]));
+			$source = $this->formatSourceCode($matches[2][$i],array("lang" => $matches[1][$i]));
 			$placeholder = "source.$i.$uniqid";
 			$replaces[$snippet] = "\n\n$placeholder\n\n";
 
