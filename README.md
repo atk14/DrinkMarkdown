@@ -18,6 +18,34 @@ DrinkMarkdown extends PHP Markdown Extra to:
 - table rendering improved
 - iobjects (to be explained)
 
+Basic Usage
+-----------
+
+    $dm = new DrinkMarkdown([
+      "table_class" => "table", // the CSS class for tables, default is "table table-bordered table-hover"
+      "html_purification_enabled" => true, // default is true
+      "temp_dir" => "/path/to/temp", // default is constant TEMP or sys_get_temp_dir()
+      "iobjects_processing_enabled" => true, // insertable objects processing, default is true
+      "urlize_text" => true, // reconstruct missing links to urls or emails? default is true
+    ]);
+
+    $html = $dm->transform($markdown);
+
+Usage in a ATK14 template
+-------------------------
+
+DrinkMarkdown package comes with two helpers usables in ATK14 templates.
+
+If you have a trusted content:
+
+    {$text|markdown nofilter} {* or *}
+    {!$text|markdown}
+
+If you have an insecure content, e.g. a comment from a user:
+
+    {$comment|safe_markdown nofilter} {* or *}
+    {!$comment|safe_markdown}
+
 Installation
 ------------
 
@@ -32,30 +60,6 @@ Optionaly you can link (or copy & edit) helpers to your project.
     ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/block.safe_markdown.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.markdown.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.safe_markdown.php app/helpers/
-
-Usage
------
-
-    $dm = new DrinkMarkdown(array(
-      "table_class" => "table", // the CSS class for tables, default is "table table-bordered table-hover"
-      "html_purification_enabled" => true, // default is true
-      "temp_dir" => "/path/to/temp", // default is constant TEMP or sys_get_temp_dir()
-    ));
-
-    $html = $dm->transform($markdown);
-
-Usage in a ATK14 template
--------------------------
-
-If you have a trusted content:
-
-    {$text|markdown nofilter} {* or *}
-    {!$text|markdown}
-
-If you have an insecure content, e.g. a comment from a user
-
-    {$comment|safe_markdown nofilter} {* or *}
-    {!$comment|safe_markdown}
 
 License
 -------
