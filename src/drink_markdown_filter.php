@@ -5,7 +5,15 @@
 class DrinkMarkdownFilter {
 
 	/**
-	 *	$this->hideSomething('/(<a\b[^>]*><\/a>)/si')
+	 * Filter method
+	 */
+	function filter($source,$transformer){
+		return $source;
+	}
+
+	/**
+	 *
+	 *	$this->hideSomething('/(<a\b[^>]*>.*?<\/a>)/si')
 	 */
 	function hideSomething($pattern,&$content,&$replaces_back = null){
 		static $counter = 0, $uniqid = null;
