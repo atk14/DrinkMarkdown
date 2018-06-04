@@ -299,4 +299,52 @@ Colors
 
 		$this->assertEquals(trim($result),trim($dm->transform($src)));
 	}
+
+	function test_iobjects(){
+		$dm = new DrinkMarkdown();
+
+		// Iobject
+		$src = '
+# Iobject
+
+[#1 Image: Testing Image]';
+
+		$result = '
+<h1>Iobject</h1>
+
+<img src="rose_1.jpg" with="444" height="333">';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		// Iobjects in Table
+		$src = '
+# Iobjects in Table
+
+|||
+|-|-|
+|[#1 Image: Testing Image]|[#2 Image: Testing Image]|';
+
+		$result = '
+<h1>Iobjects in Table</h1>
+
+<table class="table"><thead></thead><tbody><tr><td><img src="rose_1.jpg" with="444" height="333"></td>
+  <td><img src="rose_2.jpg" with="444" height="333"></td>
+</tr></tbody></table>
+		';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		// Link to Iobject
+		$src = '
+# Link to Iobject
+
+[See the picture]([#3 Image: Testing Image])';
+
+		$result = '
+<h1>Link to Iobject</h1>
+
+<p><a href="http://www.example.com/rose_3.jpg">See the picture</a></p>';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+	}
 }
