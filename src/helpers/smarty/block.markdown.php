@@ -1,5 +1,7 @@
 <?php
-require_once(__DIR__ . "/modifier.markdown.php");
+if(!function_exists("smarty_modifier_markdown")){
+	require_once(__DIR__ . "/modifier.markdown.php");
+}
 
 /**
  * Block markdown helper
