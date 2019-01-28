@@ -1,5 +1,7 @@
 <?php
-require_once(__DIR__ . "/modifier.safe_markdown.php");
+if(!function_exists("smarty_modifier_safe_markdown")){
+	require_once(__DIR__ . "/modifier.safe_markdown.php");
+}
 
 /**
  * Block safe_markdown helper
