@@ -346,5 +346,13 @@ Colors
 <p><a href="http://www.example.com/rose_3.jpg">See the picture</a></p>';
 
 		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '## H2 baby';
+		$result = '<h2>H2 baby</h2>';
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '### H3 baby';
+		$result = '<h3>H3 baby</h3>';
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
 	}
 }
