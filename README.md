@@ -52,7 +52,7 @@ Installation
 Just use the Composer:
 
     cd path/to/your/atk14/project/
-    composer require atk14/drink-markdown dev-master
+    composer require atk14/drink-markdown
 
 Optionaly you can link (or copy & edit) helpers to your project.
 
