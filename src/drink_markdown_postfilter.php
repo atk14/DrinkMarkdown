@@ -64,8 +64,8 @@ class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 
 		if($this->options["iobjects_processing_enabled"]){
 			// Iobjects
-			preg_match_all('/<(p|td)>\[#(\d+)[^\]]*\]<\/(\1)>/i',$content,$matches);
-			foreach($matches[2] as $i => $id){
+			preg_match_all('/<(p|td)>\[#(?<id>\d+)[^\]]*\]<\/(\1)>/i',$content,$matches);
+			foreach($matches["id"] as $i => $id){
 				if(!$iobject = Iobject::GetInstanceById($id)){ continue; }
 
 				$_tag = strtolower($matches[1][$i]); // "p" or "td"
