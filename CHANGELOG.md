@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.3] - 2019-10-04
+
+- Iobject can be placed into a table cell
+
 ## [0.2] - 2018-04-09
 
 ### Added
