@@ -56,8 +56,8 @@ Paragraph #2
 </tr><tr><td>c</td>
   <td>d</td>
 </tr></tbody></table><p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
-		$this->assertEquals($result2,$dm2->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result2,$dm2->transform($src));
 
 		// HTML tables
 
@@ -281,7 +281,7 @@ Colors
 <li>yellow</li>
 </ul>';
 
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		$src = '
 Colors
@@ -297,7 +297,7 @@ Colors
 <li>yellow</li>
 </ul>';
 
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 	}
 
 	function test_iobjects(){
@@ -332,7 +332,7 @@ Colors
 </tr></tbody></table>
 		';
 
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		// Link to Iobject
 		$src = '
