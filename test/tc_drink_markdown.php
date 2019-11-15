@@ -300,6 +300,16 @@ Colors
 		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 	}
 
+	function test_links(){
+		$dm = new DrinkMarkdown(array("postfilter" => new DrinkMarkdownPostfilter(array("html_purification_enabled" => false))));
+
+		$this->assertEquals('<p><a href="http://www.atk14.net/">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/)'));
+		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" class="popup">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup}'));
+		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
+		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
+		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
+	}
+
 	function test_iobjects(){
 		$dm = new DrinkMarkdown();
 
