@@ -1,6 +1,8 @@
 <?php
 class DrinkMarkdown{
 
+	const VERSION = "0.4";
+
 	var $replaces = array();
 
 	protected $prefilters = array();
