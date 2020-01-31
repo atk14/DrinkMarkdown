@@ -298,6 +298,68 @@ Colors
 </ul>';
 
 		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '
+- Fruits
+  - apple
+  - pear
+- Vegetables
+  - potatoe
+  - carrot
+';
+		$result = '
+<ul>
+<li>
+<p>Fruits</p>
+
+<ul>
+<li>apple</li>
+<li>pear</li>
+</ul></li>
+<li><p>Vegetables</p>
+
+<ul>
+<li>potatoe</li>
+<li>carrot</li>
+</ul></li>
+</ul>';
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '
+- Fruits
+  - apple
+      - red
+      - green
+  - pear
+- Vegetables
+  - potatoe
+  - carrot
+';
+		$result = '
+<ul>
+  <li>
+    <p>Fruits</p>
+    <ul>
+      <li>
+        apple
+        <ul>
+          <li>red</li>
+          <li>green</li>
+        </ul>
+      </li>
+      <li>pear</li>
+    </ul>
+  </li>
+  <li>
+    <p>Vegetables</p>
+    <ul>
+      <li>potatoe</li>
+      <li>carrot</li>
+    </ul>
+  </li>
+</ul>
+';
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 	}
 
 	function test_links(){
