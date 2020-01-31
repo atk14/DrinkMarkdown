@@ -96,6 +96,10 @@ class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 		$content = preg_replace('/\n<p><\/p><\/center>\n/',"\n</center>\n",$content);
 		$content = preg_replace('/^\n/','',$content);
 
+		// Removing HTML syntax glitches
+		$content = preg_replace('/<p>(<(font)\b[^>]*>)<\/p>/','\1',$content); // <p><font color="red"></p> -> <font color="red">
+		$content = preg_replace('/<p>(<\/(font)>)<\/p>/','\1',$content); // <p></font></p> -> </font>
+
 		// Smazani extra radku na konci souboru
 		$content = preg_replace('/\n$/s','',$content);
 
