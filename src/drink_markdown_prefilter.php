@@ -46,7 +46,13 @@ class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 			if(!$iobject = Iobject::GetInstanceById($iobject_id)){
 				return $matches[0];
 			}
-			return $matches["first_part"].$iobject->getDetailUrl().$matches["last_part"];
+			if(method_exists($iobject,"getDetailUrl")){
+				$url = $iobject->getDetailUrl();
+			}else{
+				$url = "/missing_method_getDetailUrl_on_Iobject_$iobject_id/";
+				trigger_error("Missing method getDetailUrl() on Iobject#$iobject_id");
+			}
+			return $matches["first_part"].$url.$matches["last_part"];
 		},$raw);
 
 		// Adding empty line before a list when needed
