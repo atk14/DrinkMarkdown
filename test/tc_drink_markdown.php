@@ -419,6 +419,16 @@ Colors
 
 		$this->assertEquals(trim($result),trim($dm->transform($src)));
 
+		// Properly encoded link (see Image::getDetailUrl())
+		$src = '[See the picture]([#101: Image with parameters])';
+		$result = '<p><a href="http://www.example.com/rose_101.jpg?with=333&amp;height=444">See the picture</a></p>';
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		// Missing detail URL (see Image::getDetailUrl())
+		$src = '[See the picture]([#102: Image with no detail url])';
+		$result = '<p><a href="/missing_detail_url_for_Iobject_102">See the picture</a></p>';
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
 		$src = '## H2 baby';
 		$result = '<h2>H2 baby</h2>';
 		$this->assertEquals(trim($result),trim($dm->transform($src)));

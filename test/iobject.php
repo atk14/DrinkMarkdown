@@ -1,7 +1,7 @@
 <?php
 class Iobject {
 
-	function GetInstanceById($id){
+	static function GetInstanceById($id){
 		return new Image($id);
 	}
 }

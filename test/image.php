@@ -12,6 +12,13 @@ class Image {
 	}
 
 	function getDetailUrl(){
-		return 'http://www.example.com/rose_'.$this->id.'.jpg';
+		switch($this->id){
+			case 101:
+				return 'http://www.example.com/rose_'.$this->id.'.jpg?with=333&height=444';
+			case 102:
+				return '';
+			default:
+				return 'http://www.example.com/rose_'.$this->id.'.jpg';
+		}
 	}
 }
