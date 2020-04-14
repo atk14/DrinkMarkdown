@@ -24,6 +24,6 @@
                 "atk14/tester": "*"
         },
         "autoload": {
-                "classmap": ["src/drink_markdown"]
+                "classmap": ["src/lib"]
         }
 }
