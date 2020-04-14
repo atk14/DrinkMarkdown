@@ -23,7 +23,7 @@
         "require-dev": {
                 "atk14/tester": "*",
                 "atk14/core": "dev-master",
-                "smarty/smarty": "^3.1.36"
+                "smarty/smarty": "3.1.33"
         },
         "autoload": {
                 "classmap": ["src/lib"]
