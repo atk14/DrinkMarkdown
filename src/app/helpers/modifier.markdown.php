@@ -15,10 +15,8 @@ function smarty_modifier_markdown($text){
 		"html_purification_enabled" => false,
 		"iobjects_processing_enabled" => true,
 		"urlize_text" => true,
+		"shortcodes_enabled" => true,
 	));
-
-	$markdown->appendPrefilter(new MarkdownShortcodesPrefilter());
-	$markdown->prependPostfilter(new MarkdownShortcodesPostfilter());
 
 	return $markdown->transform($text);
 }

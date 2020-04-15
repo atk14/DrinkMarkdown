@@ -60,4 +60,36 @@ This is the second column.
 ');
 		$this->assertEquals($expected,$prefilter->filter($src,$transformer));
 	}
+
+	function test_enabled_disabled(){
+		$markdown = new DrinkMarkdown(array(
+			"shortcodes_enabled" => true,
+		));
+
+		$src = '[row][col]Hello World![/col][/row]';
+		$expected = trim('
+<div class="row row--shortcode">
+
+
+<div class="col-12 col-md col--shortcode">
+
+
+<p>Hello World!</p>
+
+
+</div>
+
+
+
+</div>
+		');
+		$this->assertEquals($expected,$markdown->transform($src));
+
+		$markdown = new DrinkMarkdown(array(
+			"shortcodes_enabled" => false,
+		));
+		$src = '[row][col]Hello World![/col][/row]';
+		$expected = '<p>[row][col]Hello World![/col][/row]</p>';
+		$this->assertEquals($expected,$markdown->transform($src));
+	}
 }

@@ -8,6 +8,7 @@ function smarty_modifier_safe_markdown($text){
 		"html_purification_enabled" => true, 
 		"iobjects_processing_enabled" => false,
 		"urlize_text" => true,
+		"shortcodes_enabled" => false,
 	));
 	return $markdown->transform($text);
 }

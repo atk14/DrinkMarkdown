@@ -9,7 +9,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		// adding template dir
 		$template_dirs = $smarty->getTemplateDir();
 		$template_dirs = is_array($template_dirs) ? $template_dirs : array($template_dirs);
-		$template_dirs[] = __DIR__ . "/../views/shared/helpers/drink_shortcodes/";
+		$template_dirs[] = __DIR__ . "/../app/views/";
 		$smarty->setTemplateDir($template_dirs);
 		// adding plugin dir
 		$plugin_dirs = $smarty->getPluginsDir();
@@ -26,7 +26,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 				$source = $matches["source"][$i];
 				$params = $this->parseParams($matches["params"][$i]);
 
-				Atk14Require::Helper("block.drink_shortcode__$shortcode");
+				Atk14Require::Helper("block.drink_shortcode__$shortcode",$smarty);
 				
 				$repeat = true;
 				$fn = "smarty_block_drink_shortcode__$shortcode";

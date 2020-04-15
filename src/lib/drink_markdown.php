@@ -12,6 +12,7 @@ class DrinkMarkdown{
 		$options += array(
 			"prefilter" => null,
 			"postfilter" => null,
+			"shortcodes_enabled" => false,
 		);
 
 		$prefilter = $options["prefilter"];
@@ -22,6 +23,11 @@ class DrinkMarkdown{
 
 		$this->prefilters[] = $prefilter ? $prefilter : new DrinkMarkdownPrefilter($options);
 		$this->postfilters[] = $postfilter ? $postfilter : new DrinkMarkdownPostfilter($options);
+
+		if($options["shortcodes_enabled"]){
+			$this->appendPrefilter(new MarkdownShortcodesPrefilter());
+			$this->prependPostfilter(new MarkdownShortcodesPostfilter());
+		}
 	}
 
 	function prependPrefilter($prefilter){
