@@ -56,12 +56,19 @@ Just use the Composer:
 
 Optionaly you can link (or copy & edit) helpers to your project.
 
-    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/block.markdown.php app/helpers/
-    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/block.safe_markdown.php app/helpers/
-    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.markdown.php app/helpers/
-    ln -s ../../vendor/atk14/drink-markdown/src/helpers/smarty/modifier.safe_markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.safe_markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/modifier.markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/modifier.safe_markdown.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__row.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__col.php app/helpers/
+    mkdir app/views/shared/helpers/drink_shortcodes
+    ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_row.tpl app/views/shared/helpers/drink_shortcodes/
+    ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_col.tpl app/views/shared/helpers/drink_shortcodes/
 
 License
 -------
 
 DrinkMarkdown is free software distributed [under the terms of the MIT license](http://www.opensource.org/licenses/mit-license)
+
+[//]: # ( vim: set ts=2 et: )
