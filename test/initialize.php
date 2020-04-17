@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 define("TEST",true);
 define("DEVELOPMENT",false);
 define("PRODUCTION",false);
