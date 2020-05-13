@@ -194,6 +194,11 @@ Paragraph #2
 <p>Paragraph #2</p>');
 		$this->assertEquals($result,$dm->transform($src));
 
+		// Inline code
+
+		$src = 'Use ```div``` instead';
+		$result = '<p>Use <code>div</code> instead</p>';
+		$this->assertEquals($result,$dm->transform($src));
 
 		// Code with highlighted syntax
 
