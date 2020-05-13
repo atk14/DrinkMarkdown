@@ -3,7 +3,6 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 	function filter($content,$transformer){
 		$shortcodes = array("row","col");
-		$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
 
 		$smarty = Atk14Utils::GetSmarty();
 		// adding template dir
@@ -18,6 +17,19 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		$smarty->setPluginsDir($plugin_dirs);
 
 		// Block helpers
+		$content = $this->_processBlockShortcode($content,array("row"),$smarty);
+		$content = $this->_processBlockShortcode($content,$shortcodes,$smarty);
+
+		return $content;
+	}
+
+	private function _processBlockShortcode($content,$shortcodes,$smarty){
+		if(!$shortcodes){
+			return $content;
+		}
+
+		$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
+
 		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>.*?)-->(?<source>.*?)<!-- \/drink:\1 -->?/s';
 		while(preg_match_all($pattern,$content,$matches)){
 			foreach(array_keys($matches[0]) as $i){
@@ -34,6 +46,12 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 				if($repeat){
 					$repeat = false;
 					$out .= $fn($params,$source,$smarty,$repeat);
+				}
+
+				if($shortcodes === array("row")){
+					// we need to process columns of each row right here,
+					// because smarty_block_drink_shortcode__row sets up variable number_of_columns
+					$out = $this->_processBlockShortcode($out,array("col"),$smarty);
 				}
 
 				$content = str_replace($snippet,$out,$content);
