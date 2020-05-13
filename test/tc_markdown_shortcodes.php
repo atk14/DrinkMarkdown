@@ -71,7 +71,7 @@ This is the second column.
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col--shortcode">
+<div class="col-12 col-md col-md-12 col--shortcode">
 
 
 <p>Hello World!</p>
