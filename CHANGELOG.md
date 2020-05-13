@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.5.1] - 2020-05-13
+
+- Tests fixed
+
 ## [0.5] - 2020-04-17
 
 - Shortcodes implemented
