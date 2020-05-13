@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2020-05-13
+
+- Counting columns in a [row], added class like col-md-6 or col-md-4 to a [col]
+
 ## [0.5.1] - 2020-05-13
 
 - Tests fixed
