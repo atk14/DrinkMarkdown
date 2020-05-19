@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.5.4] - 2020-05-19
+
+- Template for the shortcode *col* optimized for 4 and 6 column row
+
 ## [0.5.3] - 2020-05-13
 
 - Processing of block shortcodes fixed
