@@ -7,7 +7,6 @@
 	{* column classes for 6-column row *}
 	{capture assign=col_classes}col-12 col-xs-12 col-md-6 col-lg-4 col-xl-2{/capture}
 {/if}
-
 <div class="{$col_classes} col--shortcode{if $class} {$class}{/if}" style="order: {$order};">
 {!$content}
 </div>

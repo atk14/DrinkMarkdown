@@ -10,7 +10,7 @@ class TcRowsAndCols extends TcBase {
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col-md-12 col--shortcode">
+<div class="col-12 col-xs-12 col-md-12 col--shortcode">
 
 
 <p>Hello World!</p>
@@ -29,7 +29,7 @@ class TcRowsAndCols extends TcBase {
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col-md-6 col--shortcode">
+<div class="col-12 col-xs-12 col-md-6 col--shortcode">
 
 
 <p>Hello World!</p>
@@ -38,7 +38,7 @@ class TcRowsAndCols extends TcBase {
 </div>
 
 
-<div class="col-12 col-md col-md-6 col--shortcode">
+<div class="col-12 col-xs-12 col-md-6 col--shortcode">
 
 
 <p>Hello Another World!</p>
@@ -58,7 +58,7 @@ class TcRowsAndCols extends TcBase {
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col-md-4 col--shortcode">
+<div class="col-12 col-xs-12 col-md-4 col--shortcode">
 
 
 <p>Hello World!</p>
@@ -67,7 +67,7 @@ class TcRowsAndCols extends TcBase {
 </div>
 
 
-<div class="col-12 col-md col-md-4 col--shortcode">
+<div class="col-12 col-xs-12 col-md-4 col--shortcode">
 
 
 <p>Hello Another World!</p>
@@ -76,7 +76,7 @@ class TcRowsAndCols extends TcBase {
 </div>
 
 
-<div class="col-12 col-md col-md-4 col--shortcode">
+<div class="col-12 col-xs-12 col-md-4 col--shortcode">
 
 
 <p>Hello from outer space!</p>
@@ -97,7 +97,7 @@ class TcRowsAndCols extends TcBase {
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col-md-12 col--shortcode">
+<div class="col-12 col-xs-12 col-md-12 col--shortcode">
 
 
 <p>Hello World!</p>
@@ -113,7 +113,7 @@ class TcRowsAndCols extends TcBase {
 <div class="row row--shortcode">
 
 
-<div class="col-12 col-md col-md-6 col--shortcode">
+<div class="col-12 col-xs-12 col-md-6 col--shortcode">
 
 
 <p>Hello Another World!</p>
@@ -122,7 +122,7 @@ class TcRowsAndCols extends TcBase {
 </div>
 
 
-<div class="col-12 col-md col-md-6 col--shortcode">
+<div class="col-12 col-xs-12 col-md-6 col--shortcode">
 
 
 <p>Hello from outer space!</p>
