@@ -59,6 +59,30 @@ This is the second column.
 <!-- /drink:row -->
 ');
 		$this->assertEquals($expected,$prefilter->filter($src,$transformer));
+
+		// Inline block shortcodes
+
+		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
+		$transformer->registerInlineBlockShortcode("upper");
+		$transformer->registerFunctionShortcode("name");
+
+		$src = 'Hello [upper]beautiful world and [name][/upper]!';
+		$expected = 'Hello <!-- drink:upper -->beautiful world and <!-- drink:name --><!-- /drink:upper -->!';
+		$this->assertEquals($expected,$prefilter->filter($src,$transformer));
+	}
+
+	function test(){
+		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
+		$transformer->registerInlineBlockShortcode("upper");
+		$transformer->registerFunctionShortcode("name");
+
+		$src = 'Hello [upper]beautiful world and [name][/upper]!';
+		$expected = '<p>Hello BEAUTIFUL WORLD AND JOHN DOE!</p>';
+		$this->assertEquals($expected,$transformer->transform($src));
+
+		$src = 'Hello [upper]beautiful world and [name gender="female"][/upper]!';
+		$expected = '<p>Hello BEAUTIFUL WORLD AND SAMANTHA DOE!</p>';
+		$this->assertEquals($expected,$transformer->transform($src));
 	}
 
 	function test_enabled_disabled(){

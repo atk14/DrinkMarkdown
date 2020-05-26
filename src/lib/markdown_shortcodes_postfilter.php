@@ -2,7 +2,6 @@
 class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 	function filter($content,$transformer){
-		$shortcodes = array("row","col");
 
 		$smarty = Atk14Utils::GetSmarty();
 		// adding template dir
@@ -16,9 +15,18 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		$plugin_dirs[] = __DIR__ . "/../app/helpers/";
 		$smarty->setPluginsDir($plugin_dirs);
 
-		// Block helpers
+		// Function shortcodes
+		$content = $this->_processFunctionShortcode($content,$transformer->getFunctionShortcodes(),$smarty);
+
+		// Inline block shortcodes
+		$content = $this->_processBlockShortcode($content,$transformer->getInlineBlockShortcodes(),$smarty);
+
+		// Block shortcodes
 		$content = $this->_processBlockShortcode($content,array("row"),$smarty);
+		$shortcodes = $transformer->getBlockShortcodes();
 		$content = $this->_processBlockShortcode($content,$shortcodes,$smarty);
+
+		
 
 		return $content;
 	}
@@ -53,6 +61,34 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 					// because smarty_block_drink_shortcode__row sets up variable number_of_columns
 					$out = $this->_processBlockShortcode($out,array("col"),$smarty);
 				}
+
+				$content = str_replace($snippet,$out,$content);
+			}
+		}
+
+		return $content;
+	}
+
+	private function _processFunctionShortcode($content,$shortcodes,$smarty){
+		if(!$shortcodes){
+			return $content;
+		}
+
+		$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
+
+		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>.*?)-->/s';
+
+		while(preg_match_all($pattern,$content,$matches)){
+			foreach(array_keys($matches[0]) as $i){
+				$snippet = $matches[0][$i];
+				$shortcode = $matches["shortcode"][$i];
+				$params = $this->parseParams($matches["params"][$i]);
+
+				Atk14Require::Helper("function.drink_shortcode__$shortcode",$smarty);
+				
+				$repeat = true;
+				$fn = "smarty_function_drink_shortcode__$shortcode";
+				$out = $fn($params,$smarty);
 
 				$content = str_replace($snippet,$out,$content);
 			}

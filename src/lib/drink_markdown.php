@@ -8,6 +8,10 @@ class DrinkMarkdown{
 	protected $prefilters = array();
 	protected $postfilters = array();
 
+	protected $block_shortcodes = array("row","col");
+	protected $inline_block_shortcodes = array();
+	protected $function_shortcodes = array();
+
 	function __construct($options = array()){
 		$options += array(
 			"prefilter" => null,
@@ -44,6 +48,30 @@ class DrinkMarkdown{
 
 	function appendPostfilter($postfilter){
 		$this->postfilters[] = $postfilter;
+	}
+
+	function registerBlockShortcode($shortcode){
+		$this->block_shortcodes[] = $shortcode;
+	}
+
+	function getBlockShortcodes(){
+		return $this->block_shortcodes;
+	}
+
+	function registerInlineBlockShortcode($shortcode){
+		$this->inline_block_shortcodes[] = $shortcode;
+	}
+
+	function getInlineBlockShortcodes(){
+		return $this->inline_block_shortcodes;
+	}
+
+	function registerFunctionShortcode($shortcode){
+		$this->function_shortcodes[] = $shortcode;
+	}
+
+	function getFunctionShortcodes(){
+		return $this->function_shortcodes;
 	}
 
 	/**
