@@ -130,4 +130,39 @@ Welcome [upper][name gender="female"][/upper]!
 		$expected = '<p>[row][col]Hello World![/col][/row]</p>';
 		$this->assertEquals($expected,$markdown->transform($src));
 	}
+
+	function test_callbacks(){
+		$markdown = new DrinkMarkdown();
+
+		// blocks
+		$markdown->registerInlineBlockShortcode("upper"); // Smarty
+		$markdown->registerInlineBlockShortcode("lower",function($content){ return strtolower($content); });
+		
+		// functions
+		$markdown->registerFunctionShortcode("name"); // Smarty
+		$markdown->registerFunctionShortcode("veggie",function($params){
+			$params += array(
+				"color" => "green"
+			);
+			$veggies = array(
+				"green" => "cucumber",
+				"red" => "tomatoe",
+				"yellow" => "potatoe"
+			);
+			$color = $params["color"];
+			return isset($veggies[$color]) ? $veggies[$color] : "nothing";
+		});
+
+		$src = '[lower]Boys[/lower] & [upper]girls[/upper]';
+		$expected = '<p>boys &amp; GIRLS</p>';
+		$this->assertEquals($expected,$markdown->transform($src));
+
+		$src = '[name] loves [veggie]!';
+		$expected = '<p>John Doe loves cucumber!</p>';
+		$this->assertEquals($expected,$markdown->transform($src));
+
+		$src = '[name gender="female"] loves [veggie color="red"]!';
+		$expected = '<p>Samantha Doe loves tomatoe!</p>';
+		$this->assertEquals($expected,$markdown->transform($src));
+	}
 }

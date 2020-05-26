@@ -16,22 +16,20 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		$smarty->setPluginsDir($plugin_dirs);
 
 		// Function shortcodes
-		$content = $this->_processFunctionShortcode($content,$transformer->getFunctionShortcodes(),$smarty);
+		$content = $this->_processFunctionShortcode($transformer,$content,$transformer->getFunctionShortcodes(),$smarty);
 
 		// Inline block shortcodes
-		$content = $this->_processBlockShortcode($content,$transformer->getInlineBlockShortcodes(),$smarty);
+		$content = $this->_processBlockShortcode($transformer,$content,$transformer->getInlineBlockShortcodes(),$smarty);
 
 		// Block shortcodes
-		$content = $this->_processBlockShortcode($content,array("row"),$smarty);
+		$content = $this->_processBlockShortcode($transformer,$content,array("row"),$smarty);
 		$shortcodes = $transformer->getBlockShortcodes();
-		$content = $this->_processBlockShortcode($content,$shortcodes,$smarty);
-
-		
+		$content = $this->_processBlockShortcode($transformer,$content,$shortcodes,$smarty);
 
 		return $content;
 	}
 
-	private function _processBlockShortcode($content,$shortcodes,$smarty){
+	private function _processBlockShortcode($transformer,$content,$shortcodes,$smarty){
 		if(!$shortcodes){
 			return $content;
 		}
@@ -45,21 +43,30 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 				$shortcode = $matches["shortcode"][$i];
 				$source = $matches["source"][$i];
 				$params = $this->parseParams($matches["params"][$i]);
+				$callback = $transformer->getShortcodeCallback($shortcode);
 
-				Atk14Require::Helper("block.drink_shortcode__$shortcode",$smarty);
-				
-				$repeat = true;
-				$fn = "smarty_block_drink_shortcode__$shortcode";
-				$out = $fn($params,$source,$smarty,$repeat);
-				if($repeat){
-					$repeat = false;
-					$out .= $fn($params,$source,$smarty,$repeat);
+				if($callback){
+
+					$out = $callback($source,$params);
+
+				}else{
+
+					Atk14Require::Helper("block.drink_shortcode__$shortcode",$smarty);
+
+					$repeat = true;
+					$fn = "smarty_block_drink_shortcode__$shortcode";
+					$out = $fn($params,$source,$smarty,$repeat);
+					if($repeat){
+						$repeat = false;
+						$out .= $fn($params,$source,$smarty,$repeat);
+					}
+
 				}
 
 				if($shortcodes === array("row")){
 					// we need to process columns of each row right here,
 					// because smarty_block_drink_shortcode__row sets up variable number_of_columns
-					$out = $this->_processBlockShortcode($out,array("col"),$smarty);
+					$out = $this->_processBlockShortcode($transformer,$out,array("col"),$smarty);
 				}
 
 				$content = str_replace($snippet,$out,$content);
@@ -69,7 +76,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		return $content;
 	}
 
-	private function _processFunctionShortcode($content,$shortcodes,$smarty){
+	private function _processFunctionShortcode($transformer,$content,$shortcodes,$smarty){
 		if(!$shortcodes){
 			return $content;
 		}
@@ -83,12 +90,21 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 				$snippet = $matches[0][$i];
 				$shortcode = $matches["shortcode"][$i];
 				$params = $this->parseParams($matches["params"][$i]);
+				$callback = $transformer->getShortcodeCallback($shortcode);
 
-				Atk14Require::Helper("function.drink_shortcode__$shortcode",$smarty);
-				
-				$repeat = true;
-				$fn = "smarty_function_drink_shortcode__$shortcode";
-				$out = $fn($params,$smarty);
+				if($callback){
+
+					$out = $callback($params);
+
+				}else{
+
+					Atk14Require::Helper("function.drink_shortcode__$shortcode",$smarty);
+
+					$repeat = true;
+					$fn = "smarty_function_drink_shortcode__$shortcode";
+					$out = $fn($params,$smarty);
+
+				}
 
 				$content = str_replace($snippet,$out,$content);
 			}
