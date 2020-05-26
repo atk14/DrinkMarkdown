@@ -73,6 +73,7 @@ This is the second column.
 
 	function test(){
 		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
+		$transformer->registerBlockShortcode("alert");
 		$transformer->registerInlineBlockShortcode("upper");
 		$transformer->registerFunctionShortcode("name");
 
@@ -82,6 +83,19 @@ This is the second column.
 
 		$src = 'Hello [upper]beautiful world and [name gender="female"][/upper]!';
 		$expected = '<p>Hello BEAUTIFUL WORLD AND SAMANTHA DOE!</p>';
+		$this->assertEquals($expected,$transformer->transform($src));
+
+		$src = '[alert type="info"]
+Welcome [upper][name gender="female"][/upper]!
+
+[/alert]';
+		$expected = trim('
+<div class="alert alert-info">
+
+<p>Welcome SAMANTHA DOE!</p>
+
+</div>
+		');
 		$this->assertEquals($expected,$transformer->transform($src));
 	}
 

@@ -27,6 +27,7 @@ Basic Usage
       "temp_dir" => "/path/to/temp", // default is constant TEMP or sys_get_temp_dir()
       "iobjects_processing_enabled" => true, // insertable objects processing, default is true
       "urlize_text" => true, // reconstruct missing links to urls or emails? default is true
+      "shortcodes_enabled" => true, // whether to enable or disable processing of shortcodes, default is true
     ]);
 
     $html = $dm->transform($markdown);
@@ -45,6 +46,69 @@ If you have an insecure content, e.g. a comment from a user:
 
     {$comment|safe_markdown nofilter} {* or *}
     {!$comment|safe_markdown}
+
+Shortcodes
+----------
+
+DrinkMarkdown can be extended with so called shortcodes.
+
+There are three types of shortcodes:
+
+- block shortcode
+- inline block shortcode
+- function shortcode
+
+    $dm = new DrinkMarkdown();
+
+    $dm->registerBlockShortcode("alert");
+    $dm->registerInlineBlockShortcode("upper");
+    $dm->registerFunctionShortcode("name");
+
+Smarty plugins must exist for the registered shortcodes:
+
+    <?php
+    // file: app/helpers/block.drink_shortcode__alert.php
+    function smarty_block_drink_shortcode__alert($params,$content,$template,&$repeat){
+      if($repeat){ return; }
+
+      $params += array(
+              "type" => "primary"
+      );
+
+      return "<div class=\"alert alert-$params[type]\" role=\"alert\">$content</div>";
+    }
+
+    <?php
+    // file: app/helpers/block.drink_shortcode__upper.php
+    function smarty_block_drink_shortcode__upper($params,$content,$template,&$repeat){
+      if($repeat){ return; }
+
+      return strtoupper($content);
+    }
+
+    <?php
+    // file: app/helpers/function.drink_shortcode__name.php
+    function smarty_function_drink_shortcode__name($params,$template){
+      $params += array(
+              "gender" => "male"
+      );
+
+      return $params["gender"]=="female" ? "Samantha Doe" : "John Doe";
+    }
+
+Now everything is ready for the magic. The following markdown text...
+
+    [alert type="info"]
+    Welcome [upper][name gender="female"][/upper]
+    [/alert]
+
+... will be rendered as:
+
+    <div class="alert alert-info">
+
+    <p>Welcome SAMANTHA DOE!</p>
+
+    </div>
 
 Installation
 ------------

@@ -16,7 +16,7 @@ class DrinkMarkdown{
 		$options += array(
 			"prefilter" => null,
 			"postfilter" => null,
-			"shortcodes_enabled" => false,
+			"shortcodes_enabled" => true,
 		);
 
 		$prefilter = $options["prefilter"];
