@@ -34,4 +34,5 @@ require(__DIR__ . "/../src/app/helpers/modifier.safe_markdown.php");
 require(__DIR__ . "/../src/app/helpers/block.markdown.php");
 require(__DIR__ . "/../src/app/helpers/block.safe_markdown.php");
 require(__DIR__ . "/../vendor/atk14/core/src/atk14_smarty_utils.php");
+require(__DIR__ . "/../vendor/atk14/core/src/atk14_smarty_base_v3.php");
 require(__DIR__ . "/../vendor/autoload.php");
