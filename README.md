@@ -50,13 +50,48 @@ If you have an insecure content, e.g. a comment from a user:
 Shortcodes
 ----------
 
-DrinkMarkdown can be extended with so called shortcodes.
+DrinkMarkdown can be extended with extensions: so called shortcodes.
 
 There are three types of shortcodes:
 
-- block shortcode
-- inline block shortcode
-- function shortcode
+- block shortcodes,
+- inline block shortcodes and
+- function shortcodes.
+
+Rendering of shortcodes is provided by Smarty (template engine used in ATK14 framework) plugins.
+Block shortcodes corresponds to Smarty block plugins, function shortcodes corresponds to Smarty function plugins.
+The difference between block and inline block shortcodes is that block shortcodes affect whole paragraphs, 
+but inline block shortcodes can operate inside paragraphs or sentences.
+
+Built-in shortcodes
+-------------------
+
+DrinkMarkdown contains block shortcodes for organizing text into columns.
+
+    [row]
+
+    [col]
+    ### Column 1
+    This is text of the first column.
+    [/col]
+
+    [col]
+    ### Column 2
+    This is text of the second column.
+    [/col]
+
+    [col]
+    ### Column 3
+    This is text of the third column.
+    [/col]
+
+    [/row]
+
+See a living example at http://markdown.plovarna.cz/czech/multiple-columns/
+
+
+Custom shortcodes
+-----------------
 
     $dm = new DrinkMarkdown();
 
@@ -64,7 +99,7 @@ There are three types of shortcodes:
     $dm->registerInlineBlockShortcode("upper");
     $dm->registerFunctionShortcode("name");
 
-Smarty plugins must exist for the registered shortcodes:
+Smarty plugins must exist for the registered shortcodes. Note the naming conventions of plugins.
 
     <?php
     // file: app/helpers/block.drink_shortcode__alert.php
@@ -72,7 +107,7 @@ Smarty plugins must exist for the registered shortcodes:
       if($repeat){ return; }
 
       $params += array(
-              "type" => "primary"
+        "type" => "primary"
       );
 
       return "<div class=\"alert alert-$params[type]\" role=\"alert\">$content</div>";
@@ -90,13 +125,15 @@ Smarty plugins must exist for the registered shortcodes:
     // file: app/helpers/function.drink_shortcode__name.php
     function smarty_function_drink_shortcode__name($params,$template){
       $params += array(
-              "gender" => "male"
+        "gender" => "male"
       );
 
       return $params["gender"]=="female" ? "Samantha Doe" : "John Doe";
     }
 
-Now everything is ready for the magic. The following markdown text...
+Now, everything is set and ready. The following markdown text...
+
+    ## This is welcome screen!
 
     [alert type="info"]
     Welcome [upper][name gender="female"][/upper]
@@ -104,10 +141,10 @@ Now everything is ready for the magic. The following markdown text...
 
 ... will be rendered as:
 
+    <h2>This is welcome screen!</h2>
+
     <div class="alert alert-info">
-
     <p>Welcome SAMANTHA DOE!</p>
-
     </div>
 
 Installation
