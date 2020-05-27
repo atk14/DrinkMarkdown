@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 2020-05-27
+
+- Markdown transformation can be disabled inside a block shortcode
+
 ## [0.6] - 2020-05-27
 
 - Shortcodes can be registered with callbacks

@@ -1,7 +1,7 @@
 <?php
 class DrinkMarkdown{
 
-	const VERSION = "0.6";
+	const VERSION = "0.6.1";
 
 	var $replaces = array();
 
