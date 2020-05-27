@@ -365,6 +365,34 @@ Colors
 </ul>
 ';
 		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		// HTML Comments
+
+		$src = '
+Hello
+
+<!-- comment -->
+
+World
+		';
+		$result = '
+<p>Hello</p>
+<p>World</p>
+		';
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '
+<!-- comment -->
+		';
+		$result = '';
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		$src = '
+<!-- comment --><!-- comment 2 -->
+		';
+		$result = '';
+		// TODO: This fails
+		// $this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 	}
 
 	function test_links(){
