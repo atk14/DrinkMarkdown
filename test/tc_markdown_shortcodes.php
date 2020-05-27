@@ -1,7 +1,7 @@
 <?php
 class TcMarkdownShortcodes extends TcBase {
 
-	function test_parseParams(){
+	function ___test_parseParams(){
 		$postfilter = new MarkdownShortcodesPostfilter();
 
 		$this->assertEquals(array(),$postfilter->parseParams(""));
@@ -13,7 +13,7 @@ class TcMarkdownShortcodes extends TcBase {
 		$this->assertEquals(array("class" => "message", "format" => "300x300,enable_enlargement"),$postfilter->parseParams('class=message format="300x300,enable_enlargement"'));
 	}
 
-	function test_prefilter(){
+	function ___test_prefilter(){
 		$prefilter = new MarkdownShortcodesPrefilter();
 		$transformer = new DrinkMarkdown();
 
@@ -71,7 +71,7 @@ This is the second column.
 		$this->assertEquals($expected,$prefilter->filter($src,$transformer));
 	}
 
-	function test(){
+	function ___test(){
 		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
 		$transformer->registerBlockShortcode("alert");
 		$transformer->registerInlineBlockShortcode("upper");
@@ -99,7 +99,7 @@ Welcome [upper][name gender="female"][/upper]!
 		$this->assertEquals($expected,$transformer->transform($src));
 	}
 
-	function test_enabled_disabled(){
+	function ___test_enabled_disabled(){
 		$markdown = new DrinkMarkdown(array(
 			"shortcodes_enabled" => true,
 		));
@@ -131,7 +131,7 @@ Welcome [upper][name gender="female"][/upper]!
 		$this->assertEquals($expected,$markdown->transform($src));
 	}
 
-	function test_callbacks(){
+	function ___test_callbacks(){
 		$markdown = new DrinkMarkdown();
 
 		// blocks
@@ -163,6 +163,53 @@ Welcome [upper][name gender="female"][/upper]!
 
 		$src = '[name gender="female"] loves [veggie color="red"]!';
 		$expected = '<p>Samantha Doe loves tomatoe!</p>';
+		$this->assertEquals($expected,$markdown->transform($src));
+	}
+
+	function test_markdown_transformation_enabled(){
+		// Block shortcode example is applied to the transformed text - this is default behaviour
+		$markdown = new DrinkMarkdown();
+		$markdown->registerBlockShortcode("example", array(
+			"callback" => function($content,$params){
+				return '<div class="example">'.$content.'</div><pre><code>'.h(trim($content)).'</code></pre></div>';
+			},
+			"markdown_transformation_enabled" => true,
+		));
+		$src = '[example]Hello <b>world</b>![/example]';
+		$expected = trim('
+<div class="example">
+
+<p>Hello <b>world</b>!</p>
+
+</div><pre><code>&lt;p&gt;Hello &lt;b&gt;world&lt;/b&gt;!&lt;/p&gt;</code></pre>');
+		$this->assertEquals($expected,$markdown->transform($src));
+
+		// Block shortcode example is applied to the raw (not been transformed) text
+		$markdown = new DrinkMarkdown();
+		$markdown->registerBlockShortcode("example", array(
+			"callback" => function($content,$params){
+				return '<div class="example">'.$content.'</div><pre><code>'.h(trim($content)).'</code></pre></div>';
+			},
+			"markdown_transformation_enabled" => false,
+		));
+		$src = '[example]Hello <b>world</b>![/example]';
+		$expected = trim('
+<div class="example">
+
+Hello <b>world</b>!
+
+</div><pre><code>Hello &lt;b&gt;world&lt;/b&gt;!</code></pre>');
+		$this->assertEquals($expected,$markdown->transform($src));
+
+
+		// Inline block shortcode with disabled markdown transformation
+		$markdown = new DrinkMarkdown();
+		$markdown->registerInlineBlockShortcode("literal", array(
+			"callback" => function($content,$params){ return $content; },
+			"markdown_transformation_enabled" => false,
+		));
+		$src = "If you want bold text in Markdown, use [literal]**asterisks**[/literal]";
+		$expected = '<p>If you want bold text in Markdown, use **asterisks**</p>';
 		$this->assertEquals($expected,$markdown->transform($src));
 	}
 }

@@ -12,6 +12,7 @@ class DrinkMarkdown{
 	protected $inline_block_shortcodes = array();
 	protected $function_shortcodes = array();
 	protected $shortcode_callbacks = array();
+	protected $block_shortcodes_with_markdown_transformation_disabled = array();
 
 	function __construct($options = array()){
 		$options += array(
@@ -51,22 +52,65 @@ class DrinkMarkdown{
 		$this->postfilters[] = $postfilter;
 	}
 
-	function registerBlockShortcode($shortcode,$callback = null){
-		$this->block_shortcodes[] = $shortcode;
-		$this->shortcode_callbacks[$shortcode]  = $callback;
+	/**
+	 *
+	 *	$this->registerBlockShortcode("highlight_html");
+	 *	$this->registerBlockShortcode("highlight_html",[
+	 *		"callback" => function($content,$params){ ... },
+	 *		"markdown_transformation_enabled" => false,
+	 *	]);
+	 *	$this->registerBlockShortcode("highlight_html",function($content,$params){ ... });
+	 *	$this->registerBlockShortcode("highlight_html",false);
+	 */
+	function registerBlockShortcode($shortcode,$options = array()){
+		$this->_registerBlockShortcode($shortcode,$options,false);
 	}
 
 	function getBlockShortcodes(){
 		return $this->block_shortcodes;
 	}
 
-	function registerInlineBlockShortcode($shortcode,$callback = null){
-		$this->inline_block_shortcodes[] = $shortcode;
-		$this->shortcode_callbacks[$shortcode]  = $callback;
+	function registerInlineBlockShortcode($shortcode,$options = array()){
+		$this->_registerBlockShortcode($shortcode,$options,true);
 	}
 
 	function getInlineBlockShortcodes(){
 		return $this->inline_block_shortcodes;
+	}
+
+	protected function _registerBlockShortcode($shortcode,$options,$inline){
+		if(!is_array($options)){
+			if(is_callable($options)){
+				$options = array(
+					"callback" => $options,
+				);
+			}elseif(is_bool($options)){
+				$options = array(
+					"markdown_transformation_enabled" => $options,
+				);
+			}else{
+				// what ???
+				$options = array();
+			}
+		}
+		$options += array(
+			"callback" => null,
+			"markdown_transformation_enabled" => true,
+		);
+
+		if($inline){
+			$this->inline_block_shortcodes[] = $shortcode;
+		}else{
+			$this->block_shortcodes[] = $shortcode;
+		}
+
+		$this->shortcode_callbacks[$shortcode]  = $options["callback"];
+
+		if(!$options["markdown_transformation_enabled"]){
+			$this->block_shortcodes_with_markdown_transformation_disabled[$shortcode] = $shortcode;
+		}else{
+			unset($this->block_shortcodes_with_markdown_transformation_disabled[$shortcode]);
+		}
 	}
 
 	/**
@@ -84,6 +128,10 @@ class DrinkMarkdown{
 
 	function getShortcodeCallback($shortcode){
 		return isset($this->shortcode_callbacks[$shortcode]) ? $this->shortcode_callbacks[$shortcode] : null;
+	}
+
+	function _getBlockShortcodesWithMarkdownTransformationDisabled(){ // TODO: I don't like the name of this method
+		return array_keys($this->block_shortcodes_with_markdown_transformation_disabled);
 	}
 
 	/**

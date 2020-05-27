@@ -50,6 +50,22 @@ class MarkdownShortcodesPrefilter extends DrinkMarkdownFilter {
 		$raw = preg_replace('/^([\s\n\r]*)(<!-- block_shortcode_break -->)+/s','\1',$raw);
 		$raw = preg_replace('/(<!-- block_shortcode_break -->)+/',"\n\n",$raw);
 
+		$shortcodes = $transformer->_getBlockShortcodesWithMarkdownTransformationDisabled();
+		if($shortcodes){
+			$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
+			$replaces = array();
+			preg_match_all("/(?<openingtag><!-- (drink:$shortcodes_str) .*?-->)(?<content>.*?)(?<closingtag><!-- \\/\\2 -->)/s",$raw,$matches);
+			for($i=0;$i<sizeof($matches[0]);$i++){
+				$openingtag = $matches["openingtag"][$i];
+				$closingtag = $matches["closingtag"][$i];
+				$content = $matches["content"][$i];
+				$placeholder = "<!-- drink:_content_replacement_$i -->";
+				$replaces["$openingtag$content$closingtag"] = "$placeholder";
+				$transformer->replaces[$placeholder] = "$openingtag$content$closingtag";
+			}
+			$raw = EasyReplace($raw,$replaces);
+		}
+
 		//echo "<pre>";
 		//echo h($raw);
 		//echo "</pre>";
