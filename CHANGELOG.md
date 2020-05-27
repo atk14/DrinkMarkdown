@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.6] - 2020-05-27
+
+- Shortcodes can be registered with callbacks
+- Added support for inline block shortcodes and function shortcodes
+- Shortcodes can be registered as callbacks
+
 ## [0.5.4] - 2020-05-19
 
 - Template for the shortcode *col* optimized for 4 and 6 column row
