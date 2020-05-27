@@ -58,7 +58,7 @@ There are three types of shortcodes:
 - inline block shortcodes and
 - function shortcodes.
 
-Rendering of shortcodes is provided by Smarty (template engine used in ATK14 framework) plugins.
+Rendering of shortcodes is either provided callback functions or by Smarty (template engine used in ATK14 framework) plugins.
 Block shortcodes corresponds to Smarty block plugins, function shortcodes corresponds to Smarty function plugins.
 The difference between block and inline block shortcodes is that block shortcodes affect whole paragraphs, 
 but inline block shortcodes can operate inside paragraphs or sentences.
@@ -95,11 +95,32 @@ Custom shortcodes
 
     $dm = new DrinkMarkdown();
 
+#### 1. Callbacks
+
+    $dm->registerBlockShortcode("alert", function($columns,$params){
+      $params += array(
+        "type" => "primary"
+      );
+      return "<div class=\"alert alert-$params[type]\" role=\"alert\">$content</div>";
+    });
+
+    $dm->registerInlineBlockShortcode("upper", function($content,$params){ return strtoupper($content); });
+
+    $dm->registerFunctionShortcode("name", function($params){
+      $params += array(
+        "gender" => "male"
+      );
+      return $params["gender"]=="female" ? "Samantha Doe" : "John Doe";
+    });
+
+#### 2. Smarty plugins
+
     $dm->registerBlockShortcode("alert");
     $dm->registerInlineBlockShortcode("upper");
     $dm->registerFunctionShortcode("name");
 
-Smarty plugins must exist for the registered shortcodes. Note the naming conventions of plugins.
+If no callback is specified during a shortcode registration, an appropriate Smarty plugin is required.
+Note the naming conventions of plugins.
 
     <?php
     // file: app/helpers/block.drink_shortcode__alert.php
