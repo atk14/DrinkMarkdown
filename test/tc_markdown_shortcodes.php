@@ -1,7 +1,7 @@
 <?php
 class TcMarkdownShortcodes extends TcBase {
 
-	function ___test_parseParams(){
+	function test_parseParams(){
 		$postfilter = new MarkdownShortcodesPostfilter();
 
 		$this->assertEquals(array(),$postfilter->parseParams(""));
@@ -13,7 +13,7 @@ class TcMarkdownShortcodes extends TcBase {
 		$this->assertEquals(array("class" => "message", "format" => "300x300,enable_enlargement"),$postfilter->parseParams('class=message format="300x300,enable_enlargement"'));
 	}
 
-	function ___test_prefilter(){
+	function test_prefilter(){
 		$prefilter = new MarkdownShortcodesPrefilter();
 		$transformer = new DrinkMarkdown();
 
@@ -71,7 +71,7 @@ This is the second column.
 		$this->assertEquals($expected,$prefilter->filter($src,$transformer));
 	}
 
-	function ___test(){
+	function test(){
 		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
 		$transformer->registerBlockShortcode("alert");
 		$transformer->registerInlineBlockShortcode("upper");
@@ -99,7 +99,7 @@ Welcome [upper][name gender="female"][/upper]!
 		$this->assertEquals($expected,$transformer->transform($src));
 	}
 
-	function ___test_enabled_disabled(){
+	function test_enabled_disabled(){
 		$markdown = new DrinkMarkdown(array(
 			"shortcodes_enabled" => true,
 		));
@@ -131,7 +131,7 @@ Welcome [upper][name gender="female"][/upper]!
 		$this->assertEquals($expected,$markdown->transform($src));
 	}
 
-	function ___test_callbacks(){
+	function test_callbacks(){
 		$markdown = new DrinkMarkdown();
 
 		// blocks
