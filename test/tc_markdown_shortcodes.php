@@ -212,4 +212,20 @@ Hello <b>world</b>!
 		$expected = '<p>If you want bold text in Markdown, use **asterisks**</p>';
 		$this->assertEquals($expected,$markdown->transform($src));
 	}
+
+	function test_shortocodes_in_source_code_samples(){
+		$markdown = new DrinkMarkdown(array("shortcodes_enabled" => true));
+		$src = '
+```
+line1
+[row][col]line2[/col][/row]
+line3
+```
+		';
+		$expected = '<pre><code>line1
+[row][col]line2[/col][/row]
+line3</code></pre>';
+		$this->assertEquals($expected,$markdown->transform($src));
+
+	}
 }
