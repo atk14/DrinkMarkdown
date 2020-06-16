@@ -177,7 +177,7 @@ Paragraph #2';
 Paragraph #1
 
 ```
-function helloWorld(){
+function hello(){
   alert("Hello World!");
 }
 ```
@@ -187,9 +187,53 @@ Paragraph #2
 		$result = trim('
 <p>Paragraph #1</p>
 
-<pre><code>function helloWorld(){
+<pre><code>function hello(){
   alert(&quot;Hello World!&quot;);
 }</code></pre>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
+		// Code #2 (4 spaces)
+
+		$src = '
+Paragraph #1
+
+    function helloWorld(){
+      alert("Hello World! (4 spaces)");
+    }
+
+Paragraph #2
+		';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<pre><code>function helloWorld(){
+  alert("Hello World! (4 spaces)");
+}
+</code></pre>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
+		// Code #2 (8 spaces)
+
+		$src = '
+Paragraph #1
+
+        function helloWorld(){
+          alert("Hello World! (8 spaces)");
+        }
+
+Paragraph #2
+		';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<pre><code>    function helloWorld(){
+      alert("Hello World! (8 spaces)");
+    }
+</code></pre>
 
 <p>Paragraph #2</p>');
 		$this->assertEquals($result,$dm->transform($src));
