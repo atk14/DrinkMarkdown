@@ -157,6 +157,7 @@ Paragraph #2';
 
 <div class="table-responsive">
 
+
 <table class="table table-bordered table-hover">
   <tr>
     <th>key2</th>
@@ -164,12 +165,56 @@ Paragraph #2';
   </tr>
 </table>
 
+
 </div>
 
 <p>Paragraph #2</p>');
 		$this->assertEquals($result,$dm->transform($src));
 
 		// 5) links are being created automatically in html tables
+		$src = '
+Paragraph #1
+
+<div class="table-responsive">
+
+<table>
+  <tr>
+    <th>*key2*</th>
+    <td>__val2__</td>
+  </tr>
+  <tr>
+    <th>link</th>
+    <td>http://www.atk14.net/</td>
+  </tr>
+</table>
+
+</div>
+
+Paragraph #2';
+		$result = trim('
+<p>Paragraph #1</p>
+
+<div class="table-responsive">
+
+
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>*key2*</th>
+    <td>__val2__</td>
+  </tr>
+  <tr>
+    <th>link</th>
+    <td>http://www.atk14.net/</td>
+  </tr>
+</table>
+
+
+</div>
+
+<p>Paragraph #2</p>');
+		$this->assertEquals($result,$dm->transform($src));
+
+		// 6) keep_html_tables_unmodified
 		$src = '
 Paragraph #1
 
@@ -208,50 +253,7 @@ Paragraph #2';
 </div>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
-
-		// 6) keep_html_tables_unmodified
-		$src = '
-Paragraph #1
-
-<div class="table-responsive">
-
-<table>
-  <tr>
-    <th>*key2*</th>
-    <td>__val2__</td>
-  </tr>
-  <tr>
-    <th>link</th>
-    <td>http://www.atk14.net/</td>
-  </tr>
-</table>
-
-</div>
-
-Paragraph #2';
-		$result = trim('
-<p>Paragraph #1</p>
-
-<div class="table-responsive">
-
-
-<table class="table table-bordered table-hover">
-  <tr>
-    <th>*key2*</th>
-    <td>__val2__</td>
-  </tr>
-  <tr>
-    <th>link</th>
-    <td>http://www.atk14.net/</td>
-  </tr>
-</table>
-
-
-</div>
-
-<p>Paragraph #2</p>');
-		$dm = new DrinkMarkdown(array("keep_html_tables_unmodified" => true));
+		$dm = new DrinkMarkdown(array("table_class" => "table table-bordered table-hover", "keep_html_tables_unmodified" => false));
 		$this->assertEquals($result,$dm->transform($src));
 
 		// Code

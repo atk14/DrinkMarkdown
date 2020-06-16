@@ -3,7 +3,7 @@ class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 
 	function __construct($options = array()){
 		$options += array(
-			"keep_html_tables_unmodified" => false
+			"keep_html_tables_unmodified" => true
 		);
 
 		$this->options = $options;
