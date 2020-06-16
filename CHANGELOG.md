@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.6.2] - 2020-06-16
+
+- Added option keep_html_tables_unmodified to DrinkMarkdownPrefilter (true by default)
+
 ## [0.6.1] - 2020-05-27
 
 - Markdown transformation can be disabled inside a block shortcode
