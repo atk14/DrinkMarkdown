@@ -169,7 +169,7 @@ Paragraph #2';
 </div>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// 5) links are being created automatically in html tables
 		$src = '
@@ -212,7 +212,7 @@ Paragraph #2';
 </div>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// 6) keep_html_tables_unmodified
 		$src = '
@@ -254,7 +254,7 @@ Paragraph #2';
 
 <p>Paragraph #2</p>');
 		$dm = new DrinkMarkdown(array("table_class" => "table table-bordered table-hover", "keep_html_tables_unmodified" => false));
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// Code
 
@@ -277,7 +277,7 @@ Paragraph #2
 }</code></pre>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// Code #2 (4 spaces)
 
@@ -299,7 +299,7 @@ Paragraph #2
 </code></pre>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// Code #2 (8 spaces)
 
@@ -321,13 +321,13 @@ Paragraph #2
 </code></pre>
 
 <p>Paragraph #2</p>');
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// Inline code
 
 		$src = 'Use ```div``` instead';
 		$result = '<p>Use <code>div</code> instead</p>';
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// Code with highlighted syntax
 
@@ -352,7 +352,7 @@ Paragraph #2
 
 <p>Paragraph #2</p>');
 
-		$this->assertEquals($result,$dm->transform($src));
+		$this->assertHtmlEquals($result,$dm->transform($src));
 
 		// HTML Purifier
 
@@ -527,11 +527,11 @@ World
 	function test_links(){
 		$dm = new DrinkMarkdown(array("postfilter" => new DrinkMarkdownPostfilter(array("html_purification_enabled" => false))));
 
-		$this->assertEquals('<p><a href="http://www.atk14.net/">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/)'));
-		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" class="popup">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup}'));
-		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
-		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
-		$this->assertEquals('<p><a href="http://www.atk14.net/" title="" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/)'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" class="popup">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
 	}
 
 	function test_iobjects(){
@@ -548,7 +548,7 @@ World
 
 <img src="rose_1.jpg" with="444" height="333">';
 
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		// Iobjects in Table
 		$src = '
@@ -579,24 +579,24 @@ World
 
 <p><a href="http://www.example.com/rose_3.jpg">See the picture</a></p>';
 
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		// Properly encoded link (see Image::getDetailUrl())
 		$src = '[See the picture]([#101: Image with parameters])';
 		$result = '<p><a href="http://www.example.com/rose_101.jpg?with=333&amp;height=444">See the picture</a></p>';
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		// Missing detail URL (see Image::getDetailUrl())
 		$src = '[See the picture]([#102: Image with no detail url])';
 		$result = '<p><a href="/missing_detail_url_for_Iobject_102">See the picture</a></p>';
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		$src = '## H2 baby';
 		$result = '<h2>H2 baby</h2>';
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 
 		$src = '### H3 baby';
 		$result = '<h3>H3 baby</h3>';
-		$this->assertEquals(trim($result),trim($dm->transform($src)));
+		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
 	}
 }
