@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.6.3] - 2020-07-18
+
+- Dependency updated: ezyang/htmlpurifier: >=4.8|<=4.13
+
 ## [0.6.2] - 2020-06-16
 
 - Added option keep_html_tables_unmodified to DrinkMarkdownPrefilter (true by default)
