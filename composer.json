@@ -15,7 +15,7 @@
                 "php": ">=5.3.0",
                 "easybook/geshi": "1.0.8.*",
                 "michelf/php-markdown": "1.7.*|1.8.*|1.9.*",
-                "ezyang/htmlpurifier": "4.8.*",
+                "ezyang/htmlpurifier": "4.8.*|4.13.*",
                 "yarri/link-finder": "2.*",
                 "atk14/files": "1.*",
                 "atk14/xmole": "*"
