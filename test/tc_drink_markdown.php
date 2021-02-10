@@ -532,6 +532,8 @@ World
 		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
 		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
 		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
+
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/">'."\nAtk14 Framework!\n</a></p>",$dm->transform("[\nAtk14 Framework!\n](http://www.atk14.net/)"));
 	}
 
 	function test_iobjects(){
@@ -580,6 +582,34 @@ World
 <p><a href="http://www.example.com/rose_3.jpg">See the picture</a></p>';
 
 		$this->assertHtmlEquals(trim($result),trim($dm->transform($src)));
+
+		// Link on Iobject
+
+		$src = '
+# Link on Iobject
+
+[![Rose]([#3 Image: Testing Image])](http://www.rose.com/)';
+
+		$result = '
+<h1>Link on Iobject</h1>
+
+<p><a href="http://www.rose.com/"><img src="http://www.example.com/rose_3.jpg" alt="Rose" /></a></p>';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
+
+		// Link to Iobject on Iobject
+
+		$src = '
+# Link to Iobject on Iobject
+
+[![Rose]([#3 Image: Testing Image])]([#1 Image: Testing Image])';
+
+		$result = '
+<h1>Link to Iobject on Iobject</h1>
+
+<p><a href="http://www.example.com/rose_1.jpg"><img src="http://www.example.com/rose_3.jpg" alt="Rose" /></a></p>';
+
+		$this->assertEquals(trim($result),trim($dm->transform($src)));
 
 		// Properly encoded link (see Image::getDetailUrl())
 		$src = '[See the picture]([#101: Image with parameters])';

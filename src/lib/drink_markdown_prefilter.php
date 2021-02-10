@@ -51,27 +51,40 @@ class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 		// Direct links to Iobjects
 		//
 		// [Click here to see the song]([#33 Video: Song]) -> [Click here to see the song](https://www.youtube.com/watch?v=OFY_mVSnr-8)
-		$raw = preg_replace_callback('/(?P<first_part>\[[^\]]+\]\()\[#(?P<iobject_id>\d+)[^\]]*\](?P<last_part>(|\s[^)]+)\))/',function($matches){
-			$iobject_id = $matches["iobject_id"];
+		// [![Rose]([#3 Image: Rose])]([#33 Video: Song]) -> [![Rose]([#3 Image: Rose])](https://www.youtube.com/watch?v=OFY_mVSnr-8)
 
-			if(!$iobject = Iobject::GetInstanceById($iobject_id)){
-				return $matches[0];
-			}
+		
+		$image_pattern = '!\[[^\]]*\]\(\[#\d+[^\]]*\]\)'; // ![Rose]([#3 Image: Testing Image])
+		$no_square_bracket_pattern = '[^\]]+';
 
-			$detail_url = "";
-			if(method_exists($iobject,"getDetailUrl")){
-				$detail_url = $iobject->getDetailUrl();
-			}else{
-				$detail_url = "/missing_method_getDetailUrl_on_Iobject_$iobject_id";
-				trigger_error("Missing method getDetailUrl() on Iobject#$iobject_id");
-			}
-			if(!strlen($detail_url)){
-				$detail_url = "/missing_detail_url_for_Iobject_$iobject_id";
-				trigger_error("Missing detail_url for Iobject#$iobject_id");
-			}
+		foreach(array(
+			$image_pattern, // first, we need to process links to Iobjects on Iobject images
+			$no_square_bracket_pattern
+		) as $p){
 
-			return $matches["first_part"].$detail_url.$matches["last_part"];
-		},$raw);
+			$raw = preg_replace_callback('/(?P<first_part>\['.$p.'\]\()\[#(?P<iobject_id>\d+)[^\]]*\](?P<last_part>(|\s[^)]+)\))/',function($matches){
+				$iobject_id = $matches["iobject_id"];
+
+				if(!$iobject = Iobject::GetInstanceById($iobject_id)){
+					return $matches[0];
+				}
+
+				$detail_url = "";
+				if(method_exists($iobject,"getDetailUrl")){
+					$detail_url = $iobject->getDetailUrl();
+				}else{
+					$detail_url = "/missing_method_getDetailUrl_on_Iobject_$iobject_id";
+					trigger_error("Missing method getDetailUrl() on Iobject#$iobject_id");
+				}
+				if(!strlen($detail_url)){
+					$detail_url = "/missing_detail_url_for_Iobject_$iobject_id";
+					trigger_error("Missing detail_url for Iobject#$iobject_id");
+				}
+
+				return $matches["first_part"].$detail_url.$matches["last_part"];
+			},$raw);
+
+		}
 
 		// Adding empty line before a list when needed
 		//
