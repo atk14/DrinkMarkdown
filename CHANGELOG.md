@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.6.4] - 2021-02-10
+
+- Building direct links to Iobjects fixed - a link can be on an image, which is also an Iobject
+
 ## [0.6.3] - 2020-07-18
 
 - Dependency updated: ezyang/htmlpurifier: >=4.8|<=4.13
