@@ -17,15 +17,15 @@
                 "michelf/php-markdown": "1.7.*|1.8.*|1.9.*",
                 "ezyang/htmlpurifier": ">=4.8|<=4.13",
                 "yarri/link-finder": "2.*",
-                "atk14/files": "1.*",
-                "atk14/xmole": "*"
+                "atk14/files": "1.*"
         },
         "require-dev": {
                 "atk14/tester": "*",
                 "atk14/core": "dev-master",
                 "atk14/functions": "dev-master",
                 "atk14/string4": "^0.3",
-                "smarty/smarty": "3.1.33"
+                "smarty/smarty": "3.1.33",
+                "atk14/xmole": "*"
         },
         "autoload": {
                 "classmap": ["src/lib"]
