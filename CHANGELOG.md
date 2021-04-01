@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.7.1] - 2021-04-01
+
+- Block shortcode div rewritten as a callback
+
 ## [0.7] - 2021-04-01
 
 - Added block shortcode div
