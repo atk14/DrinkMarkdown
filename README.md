@@ -193,7 +193,6 @@ Optionaly you can link (or copy & edit) helpers to your project.
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/modifier.safe_markdown.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__row.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__col.php app/helpers/
-    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__div.php app/helpers/
     mkdir -p app/views/shared/helpers/drink_shortcodes
     ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_row.tpl app/views/shared/helpers/drink_shortcodes/
     ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_col.tpl app/views/shared/helpers/drink_shortcodes/
