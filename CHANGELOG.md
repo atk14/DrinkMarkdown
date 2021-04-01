@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.7] - 2021-04-01
+
+- Added block shortcode div
+
 ## [0.6.4] - 2021-02-10
 
 - Building direct links to Iobjects fixed - a link can be on an image, which is also an Iobject
