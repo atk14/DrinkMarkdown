@@ -8,7 +8,7 @@ class DrinkMarkdown{
 	protected $prefilters = array();
 	protected $postfilters = array();
 
-	protected $block_shortcodes = array("row","col");
+	protected $block_shortcodes = array("row","col","div");
 	protected $inline_block_shortcodes = array();
 	protected $function_shortcodes = array();
 	protected $shortcode_callbacks = array();

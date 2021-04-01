@@ -89,6 +89,15 @@ DrinkMarkdown contains block shortcodes for organizing text into columns.
 
 See a living example at http://markdown.plovarna.cz/czech/multiple-columns/
 
+Shortcode _div_ renders <div> element with given attributes. Unlike direct usage of the HTML element div, markdown syntax is being interpreted inside the shortcode.
+
+    [div class="teaser" id="id_teaser"]
+
+    ## Hello World!
+
+    Welcome to this very nice place.
+
+    [/div]
 
 Custom shortcodes
 -----------------
@@ -184,6 +193,7 @@ Optionaly you can link (or copy & edit) helpers to your project.
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/modifier.safe_markdown.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__row.php app/helpers/
     ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__col.php app/helpers/
+    ln -s ../../vendor/atk14/drink-markdown/src/app/helpers/block.drink_shortcode__div.php app/helpers/
     mkdir -p app/views/shared/helpers/drink_shortcodes
     ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_row.tpl app/views/shared/helpers/drink_shortcodes/
     ln -s ../../../../../vendor/atk14/drink-markdown/src/app/views/shared/helpers/drink_shortcodes/_col.tpl app/views/shared/helpers/drink_shortcodes/
