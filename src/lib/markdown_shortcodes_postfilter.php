@@ -5,7 +5,17 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 		$replaces = $transformer->replaces;
 		$replaces["test"] = "test";
-		$replaces = array_filter($replaces,function($k){ return !!preg_match('/drink:_content_replacement_/',$k);},ARRAY_FILTER_USE_KEY);
+
+		// ARRAY_FILTER_USE_KEY doesn't exist in PHP5.5
+		//$replaces = array_filter($replaces,function($k){ return !!preg_match('/drink:_content_replacement_/',$k);},ARRAY_FILTER_USE_KEY);
+		$_replaces = array();
+		foreach($replaces as $k => $v){
+			if(preg_match('/drink:_content_replacement_/',$k)){
+				$_replaces[$k] = $v;
+			}
+		}
+		$replaces = $_replaces;
+
 		$content = EasyReplace($content,$replaces);
 
 		$smarty = Atk14Utils::GetSmarty();
