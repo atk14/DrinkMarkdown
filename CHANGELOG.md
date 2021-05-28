@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.7.2] - 2021-05-28
+
+- PHP5.5 issue fixed
+
 ## [0.7.1] - 2021-04-01
 
 - Block shortcode div rewritten as a callback
