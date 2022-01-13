@@ -528,10 +528,10 @@ World
 		$dm = new DrinkMarkdown(array("postfilter" => new DrinkMarkdownPostfilter(array("html_purification_enabled" => false))));
 
 		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/)'));
-		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" class="popup">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup}'));
-		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
-		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
-		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" title="" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" class="popup">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" class="popup outside">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){.popup .outside}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" id="atk14_link">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){#atk14_link}'));
+		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/" target="_blank">Atk14 Framework</a></p>',$dm->transform('[Atk14 Framework](http://www.atk14.net/){target=_blank}'));
 
 		$this->assertHtmlEquals('<p><a href="http://www.atk14.net/">'."\nAtk14 Framework!\n</a></p>",$dm->transform("[\nAtk14 Framework!\n](http://www.atk14.net/)"));
 	}
