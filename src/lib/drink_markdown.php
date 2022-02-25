@@ -8,17 +8,22 @@ class DrinkMarkdown{
 	protected $prefilters = array();
 	protected $postfilters = array();
 
-	protected $block_shortcodes = array("row","col");
+	protected $block_shortcodes = array("row" => "row", "col" => "col");
 	protected $inline_block_shortcodes = array();
 	protected $function_shortcodes = array();
 	protected $shortcode_callbacks = array();
 	protected $block_shortcodes_with_markdown_transformation_disabled = array();
 
+	protected $smarty;
+
 	function __construct($options = array()){
+		static $autodiscovered_shortcodes = array();
+
 		$options += array(
 			"prefilter" => null,
 			"postfilter" => null,
 			"shortcodes_enabled" => true,
+			"smarty" => null,
 		);
 
 		$prefilter = $options["prefilter"];
@@ -29,6 +34,24 @@ class DrinkMarkdown{
 
 		$this->prefilters[] = $prefilter ? $prefilter : new DrinkMarkdownPrefilter($options);
 		$this->postfilters[] = $postfilter ? $postfilter : new DrinkMarkdownPostfilter($options);
+	
+		// Preparing Smarty object
+		if(!$options["smarty"]){
+			$options["smarty"] = Atk14Utils::GetSmarty();
+		}
+		$smarty = $options["smarty"];
+		// adding template dir
+		$template_dirs = $smarty->getTemplateDir();
+		$template_dirs = is_array($template_dirs) ? $template_dirs : array($template_dirs);
+		$template_dirs[] = __DIR__ . "/../app/views/";
+		$smarty->setTemplateDir($template_dirs);
+		// adding plugin dir
+		$plugin_dirs = $smarty->getPluginsDir();
+		$plugin_dirs = is_array($plugin_dirs) ? $plugin_dirs : array($plugin_dirs);
+		$plugin_dirs[] = __DIR__ . "/../app/helpers/";
+		$smarty->setPluginsDir($plugin_dirs);
+		//
+		$this->smarty = $smarty;
 
 		if($options["shortcodes_enabled"]){
 			$this->appendPrefilter(new MarkdownShortcodesPrefilter());
@@ -48,6 +71,36 @@ class DrinkMarkdown{
 
 				return "<div$attrs>\n$content\n</div>";
 			});
+
+			// Smarty shortcode autowiring
+			$plugins_dir = array_unique($this->smarty->getPluginsDir());
+			$ad_key = md5(serialize($plugins_dir));
+			if(!isset($autodiscovered_shortcodes[$ad_key])){
+				$autodiscovered_shortcodes[$ad_key] = array(
+					"block_shortcodes" => array(),
+					"function_shortcodes" => array(),
+				);
+				foreach($plugins_dir as $dir){
+					if(!file_exists($dir)){ continue; }
+					foreach(scandir($dir) as $file){
+						if(preg_match("/^block.drink_shortcode__(.+).php$/",$file,$matches)){
+							$autodiscovered_shortcodes[$ad_key]["block_shortcodes"][] = $matches[1];
+						}
+						if(preg_match("/^function.drink_shortcode__(.+).php$/",$file,$matches)){
+							$autodiscovered_shortcodes[$ad_key]["function_shortcodes"][] = $matches[1];
+						}
+					}
+				}
+			}
+			foreach($autodiscovered_shortcodes[$ad_key]["block_shortcodes"] as $shortcode){
+				if($this->isShortcodeRegistered($shortcode)){ continue; }
+				$this->registerBlockShortcode($shortcode);
+			}
+			foreach($autodiscovered_shortcodes[$ad_key]["function_shortcodes"] as $shortcode){
+				if($this->isShortcodeRegistered($shortcode)){ continue; }
+				$this->registerFunctionShortcode($shortcode);
+			}
+
 		}
 	}
 
@@ -67,6 +120,11 @@ class DrinkMarkdown{
 		$this->postfilters[] = $postfilter;
 	}
 
+	function isShortcodeRegistered($shortcode){
+		$shortcode = (string)$shortcode;
+		return isset($this->block_shortcodes[$shortcode]) || isset($this->inline_block_shortcodes[$shortcode]) || isset($this->function_shortcodes[$shortcode]);
+	}
+
 	/**
 	 *
 	 *	$this->registerBlockShortcode("highlight_html");
@@ -82,7 +140,7 @@ class DrinkMarkdown{
 	}
 
 	function getBlockShortcodes(){
-		return $this->block_shortcodes;
+		return array_values($this->block_shortcodes);
 	}
 
 	function registerInlineBlockShortcode($shortcode,$options = array()){
@@ -90,10 +148,20 @@ class DrinkMarkdown{
 	}
 
 	function getInlineBlockShortcodes(){
-		return $this->inline_block_shortcodes;
+		return array_values($this->inline_block_shortcodes);
+	}
+
+	protected function _unregisterShortcode($shortcode){
+		unset($this->block_shortcodes[$shortcode]);
+		unset($this->inline_block_shortcodes[$shortcode]);
+		unset($this->function_shortcodes[$shortcode]);
+		unset($this->shortcode_callbacks[$shortcode]);
+		unset($this->block_shortcodes_with_markdown_transformation_disabled[$shortcode]);
 	}
 
 	protected function _registerBlockShortcode($shortcode,$options,$inline){
+		$this->_unregisterShortcode($shortcode);
+
 		if(!is_array($options)){
 			if(is_callable($options)){
 				$options = array(
@@ -114,9 +182,9 @@ class DrinkMarkdown{
 		);
 
 		if($inline){
-			$this->inline_block_shortcodes[] = $shortcode;
+			$this->inline_block_shortcodes[$shortcode] = $shortcode;
 		}else{
-			$this->block_shortcodes[] = $shortcode;
+			$this->block_shortcodes[$shortcode] = $shortcode;
 		}
 
 		$this->shortcode_callbacks[$shortcode]  = $options["callback"];
@@ -133,12 +201,14 @@ class DrinkMarkdown{
 	 *	$dm->registerFunctionShortcode("lower",function($content,$params){ return strtolower($content); });
 	 */
 	function registerFunctionShortcode($shortcode,$callback = null){
-		$this->function_shortcodes[] = $shortcode;
+		$this->_unregisterShortcode($shortcode);
+
+		$this->function_shortcodes[$shortcode] = $shortcode;
 		$this->shortcode_callbacks[$shortcode]  = $callback;
 	}
 
 	function getFunctionShortcodes(){
-		return $this->function_shortcodes;
+		return array_values($this->function_shortcodes);
 	}
 
 	function getShortcodeCallback($shortcode){
@@ -147,6 +217,10 @@ class DrinkMarkdown{
 
 	function _getBlockShortcodesWithMarkdownTransformationDisabled(){ // TODO: I don't like the name of this method
 		return array_keys($this->block_shortcodes_with_markdown_transformation_disabled);
+	}
+
+	function getSmarty(){
+		return $this->smarty;
 	}
 
 	/**

@@ -226,6 +226,23 @@ line3
 [row][col]line2[/col][/row]
 line3</code></pre>';
 		$this->assertEquals($expected,$markdown->transform($src));
+	}
 
+	function test_smarty_shortcode_autowiring(){
+		$markdown = new DrinkMarkdown();
+
+		$this->assertEquals(true,$markdown->isShortcodeRegistered("name"));
+		$this->assertEquals(true,$markdown->isShortcodeRegistered("upper"));
+
+		$this->assertEquals('<p>Hi John Doe!</p>',$markdown->transform("Hi [name]!"));
+
+		// By default, block shortcode is being registered as a block (not inline) shortcode
+		$this->assertEquals(trim('
+<p>Hi</p>
+
+
+
+<p>SAMANTHA</p>
+		'),trim($markdown->transform("Hi [upper]Samantha[/upper]")));
 	}
 }
