@@ -23,6 +23,7 @@ class DrinkMarkdown{
 			"prefilter" => null,
 			"postfilter" => null,
 			"shortcodes_enabled" => true,
+			"shortcode_autowiring_enabled" => true,
 			"smarty" => null,
 		);
 
@@ -73,32 +74,34 @@ class DrinkMarkdown{
 			});
 
 			// Smarty shortcode autowiring
-			$plugins_dir = array_unique($this->smarty->getPluginsDir());
-			$ad_key = md5(serialize($plugins_dir));
-			if(!isset($autodiscovered_shortcodes[$ad_key])){
-				$autodiscovered_shortcodes[$ad_key] = array(
-					"block_shortcodes" => array(),
-					"function_shortcodes" => array(),
-				);
-				foreach($plugins_dir as $dir){
-					if(!file_exists($dir)){ continue; }
-					foreach(scandir($dir) as $file){
-						if(preg_match("/^block.drink_shortcode__(.+).php$/",$file,$matches)){
-							$autodiscovered_shortcodes[$ad_key]["block_shortcodes"][] = $matches[1];
-						}
-						if(preg_match("/^function.drink_shortcode__(.+).php$/",$file,$matches)){
-							$autodiscovered_shortcodes[$ad_key]["function_shortcodes"][] = $matches[1];
+			if($options["shortcode_autowiring_enabled"]){
+				$plugins_dir = array_unique($this->smarty->getPluginsDir());
+				$ad_key = md5(serialize($plugins_dir));
+				if(!isset($autodiscovered_shortcodes[$ad_key])){
+					$autodiscovered_shortcodes[$ad_key] = array(
+						"block_shortcodes" => array(),
+						"function_shortcodes" => array(),
+					);
+					foreach($plugins_dir as $dir){
+						if(!file_exists($dir)){ continue; }
+						foreach(scandir($dir) as $file){
+							if(preg_match("/^block.drink_shortcode__(.+).php$/",$file,$matches)){
+								$autodiscovered_shortcodes[$ad_key]["block_shortcodes"][] = $matches[1];
+							}
+							if(preg_match("/^function.drink_shortcode__(.+).php$/",$file,$matches)){
+								$autodiscovered_shortcodes[$ad_key]["function_shortcodes"][] = $matches[1];
+							}
 						}
 					}
 				}
-			}
-			foreach($autodiscovered_shortcodes[$ad_key]["block_shortcodes"] as $shortcode){
-				if($this->isShortcodeRegistered($shortcode)){ continue; }
-				$this->registerBlockShortcode($shortcode);
-			}
-			foreach($autodiscovered_shortcodes[$ad_key]["function_shortcodes"] as $shortcode){
-				if($this->isShortcodeRegistered($shortcode)){ continue; }
-				$this->registerFunctionShortcode($shortcode);
+				foreach($autodiscovered_shortcodes[$ad_key]["block_shortcodes"] as $shortcode){
+					if($this->isShortcodeRegistered($shortcode)){ continue; }
+					$this->registerBlockShortcode($shortcode);
+				}
+				foreach($autodiscovered_shortcodes[$ad_key]["function_shortcodes"] as $shortcode){
+					if($this->isShortcodeRegistered($shortcode)){ continue; }
+					$this->registerFunctionShortcode($shortcode);
+				}
 			}
 
 		}

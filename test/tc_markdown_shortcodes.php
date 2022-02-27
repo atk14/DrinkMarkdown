@@ -244,5 +244,20 @@ line3</code></pre>';
 
 <p>SAMANTHA</p>
 		'),trim($markdown->transform("Hi [upper]Samantha[/upper]")));
+
+		// Disabling autowiring
+
+		$markdown = new DrinkMarkdown(array("shortcode_autowiring_enabled" => false));
+
+		$this->assertEquals(false,$markdown->isShortcodeRegistered("name"));
+		$this->assertEquals(false,$markdown->isShortcodeRegistered("upper"));
+
+		$this->assertEquals('<p>Hi [name]!</p>',$markdown->transform("Hi [name]!"));
+		$this->assertEquals('<p>Hi [upper]Samantha[/upper]</p>',$markdown->transform("Hi [upper]Samantha[/upper]"));
+
+		$markdown->registerFunctionShortcode("name");
+
+		$this->assertEquals('<p>Hi John Doe!</p>',$markdown->transform("Hi [name]!"));
+		$this->assertEquals('<p>Hi [upper]Samantha[/upper]</p>',$markdown->transform("Hi [upper]Samantha[/upper]"));
 	}
 }
