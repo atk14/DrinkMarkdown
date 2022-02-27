@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8] - 2022-02-27
+
+- Smarty shortcode autowiring
+
 ## [0.7.2] - 2021-05-28
 
 - PHP5.5 issue fixed
