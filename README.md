@@ -64,8 +64,7 @@ Block shortcodes corresponds to Smarty block plugins, function shortcodes corres
 The difference between block and inline block shortcodes is that block shortcodes affect whole paragraphs, 
 but inline block shortcodes can operate inside paragraphs or sentences.
 
-Built-in shortcodes
--------------------
+### Built-in shortcodes
 
 DrinkMarkdown contains block shortcodes for organizing text into columns.
 
@@ -100,8 +99,7 @@ Shortcode _div_ renders <div> element with given attributes. Unlike direct usage
 
     [/div]
 
-Custom shortcodes
------------------
+### Custom shortcodes
 
     $dm = new DrinkMarkdown();
 
@@ -177,6 +175,14 @@ Now, everything is set and ready. The following markdown text...
     <div class="alert alert-info">
     <p>Welcome SAMANTHA DOE!</p>
     </div>
+
+### Shortcode autowiring
+
+By default, all Smarty plugins found are registered as either function shortcodes or block shortcodes.
+
+For example, if file app/helpers/function.smarty_function_drink_shortcode__current_year.php exists, the shortcode [current_year] can be used without previous registration.
+
+If shortcode autowiring is not desired behaviour, it can be disabled by "shortcode_autowiring_enabled" option in the constructor.
 
 Installation
 ------------
