@@ -28,6 +28,7 @@ Basic Usage
       "iobjects_processing_enabled" => true, // insertable objects processing, default is true
       "urlize_text" => true, // reconstruct missing links to urls or emails? default is true
       "shortcodes_enabled" => true, // whether to enable or disable processing of shortcodes, default is true
+      "shortcode_autowiring_enabled" => true, // Smarty shortcodes are being registered automatically
     ]);
 
     $html = $dm->transform($markdown);
