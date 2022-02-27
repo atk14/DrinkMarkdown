@@ -18,17 +18,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 		$content = EasyReplace($content,$replaces);
 
-		$smarty = Atk14Utils::GetSmarty();
-		// adding template dir
-		$template_dirs = $smarty->getTemplateDir();
-		$template_dirs = is_array($template_dirs) ? $template_dirs : array($template_dirs);
-		$template_dirs[] = __DIR__ . "/../app/views/";
-		$smarty->setTemplateDir($template_dirs);
-		// adding plugin dir
-		$plugin_dirs = $smarty->getPluginsDir();
-		$plugin_dirs = is_array($plugin_dirs) ? $plugin_dirs : array($plugin_dirs);
-		$plugin_dirs[] = __DIR__ . "/../app/helpers/";
-		$smarty->setPluginsDir($plugin_dirs);
+		$smarty = $transformer->getSmarty();
 
 		// Function shortcodes
 		$content = $this->_processFunctionShortcode($transformer,$content,$transformer->getFunctionShortcodes(),$smarty);

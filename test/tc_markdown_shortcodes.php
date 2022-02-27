@@ -226,6 +226,38 @@ line3
 [row][col]line2[/col][/row]
 line3</code></pre>';
 		$this->assertEquals($expected,$markdown->transform($src));
+	}
 
+	function test_smarty_shortcode_autowiring(){
+		$markdown = new DrinkMarkdown();
+
+		$this->assertEquals(true,$markdown->isShortcodeRegistered("name"));
+		$this->assertEquals(true,$markdown->isShortcodeRegistered("upper"));
+
+		$this->assertEquals('<p>Hi John Doe!</p>',$markdown->transform("Hi [name]!"));
+
+		// By default, block shortcode is being registered as a block (not inline) shortcode
+		$this->assertEquals(trim('
+<p>Hi</p>
+
+
+
+<p>SAMANTHA</p>
+		'),trim($markdown->transform("Hi [upper]Samantha[/upper]")));
+
+		// Disabling autowiring
+
+		$markdown = new DrinkMarkdown(array("shortcode_autowiring_enabled" => false));
+
+		$this->assertEquals(false,$markdown->isShortcodeRegistered("name"));
+		$this->assertEquals(false,$markdown->isShortcodeRegistered("upper"));
+
+		$this->assertEquals('<p>Hi [name]!</p>',$markdown->transform("Hi [name]!"));
+		$this->assertEquals('<p>Hi [upper]Samantha[/upper]</p>',$markdown->transform("Hi [upper]Samantha[/upper]"));
+
+		$markdown->registerFunctionShortcode("name");
+
+		$this->assertEquals('<p>Hi John Doe!</p>',$markdown->transform("Hi [name]!"));
+		$this->assertEquals('<p>Hi [upper]Samantha[/upper]</p>',$markdown->transform("Hi [upper]Samantha[/upper]"));
 	}
 }
