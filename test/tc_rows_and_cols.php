@@ -4,7 +4,6 @@ class TcRowsAndCols extends TcBase {
 	function test(){
 		$markdown = new DrinkMarkdown(array("shortcodes_enabled" => true));
 
-
 		$src = '[row][col]Hello World![/col][/row]';
 		$expected = '
 			<div class="row row--shortcode">
@@ -122,6 +121,28 @@ class TcRowsAndCols extends TcBase {
 				</div>
 				<div class="col-12 col-xs-12 col-md-6 col-lg-4 col-xl-2 col--shortcode">
 					<p>Col 6</p>
+				</div>
+			</div>
+		';
+		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
+		$src = '
+[row]
+[col class="alert-success"]Success[/col]
+[col class="alert-info"]Info[/col]
+[col class="alert-danger"]Danger[/col]
+[/row]
+		';
+		$expected = '
+			<div class="row row--shortcode">
+				<div class="col-12 col-xs-12 col-md-4 col--shortcode alert-success">
+					<p>Success</p>
+				</div>
+				<div class="col-12 col-xs-12 col-md-4 col--shortcode alert-info">
+					<p>Info</p>
+				</div>
+				<div class="col-12 col-xs-12 col-md-4 col--shortcode alert-danger">
+					<p>Danger</p>
 				</div>
 			</div>
 		';
