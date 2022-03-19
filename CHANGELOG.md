@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.2] - 2022-03-19
+
+* 35d9cc3 - Nested block shortcodes detection corrected
+
 ## [0.8.1] - 2022-03-09
 
 * 504256b - Counting columns fixed in the shortcode row
