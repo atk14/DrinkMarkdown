@@ -41,41 +41,54 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 		$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
 
-		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>.*?)-->(?<source>.*?)<!-- \/drink:\1 -->?/s';
-		while(preg_match_all($pattern,$content,$matches)){
-			foreach(array_keys($matches[0]) as $i){
-				$snippet = $matches[0][$i];
-				$shortcode = $matches["shortcode"][$i];
-				$source = $matches["source"][$i];
-				$params = $this->parseParams($matches["params"][$i]);
-				$callback = $transformer->getShortcodeCallback($shortcode);
+		// <!-- drink:row -->
+		//
+		// <!-- drink:col -->
+		//
+		// Some content
+		//
+		// <!-- drink:col -->
+		//
+		// <!-- drink:row -->
 
-				if($callback){
+		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>(?:(?!(<!-- drink:\1 )).)*?)-->(?<source>(?:(?!(<!-- drink:\1 )).)*?)<!-- \/drink:\1 -->/s';
 
-					$out = $callback($source,$params);
-
-				}else{
-
-					Atk14Require::Helper("block.drink_shortcode__$shortcode",$smarty);
-
-					$repeat = true;
-					$fn = "smarty_block_drink_shortcode__$shortcode";
-					$out = $fn($params,$source,$smarty,$repeat);
-					if($repeat){
-						$repeat = false;
-						$out .= $fn($params,$source,$smarty,$repeat);
-					}
-
-				}
-
-				if($shortcodes === array("row")){
-					// we need to process columns of each row right here,
-					// because smarty_block_drink_shortcode__row sets up variable number_of_columns
-					$out = $this->_processBlockShortcode($transformer,$out,array("col"),$smarty);
-				}
-
-				$content = str_replace($snippet,$out,$content);
+		while(1){
+			if(!preg_match($pattern,$content,$matches)){
+				break;
 			}
+
+			$snippet = $matches[0];
+			$shortcode = $matches["shortcode"];
+			$source = $matches["source"];
+			$params = $this->parseParams($matches["params"]);
+			$callback = $transformer->getShortcodeCallback($shortcode);
+
+			if($callback){
+
+				$out = $callback($source,$params);
+
+			}else{
+
+				Atk14Require::Helper("block.drink_shortcode__$shortcode",$smarty);
+
+				$repeat = true;
+				$fn = "smarty_block_drink_shortcode__$shortcode";
+				$out = $fn($params,$source,$smarty,$repeat);
+				if($repeat){
+					$repeat = false;
+					$out .= $fn($params,$source,$smarty,$repeat);
+				}
+
+			}
+
+			if($shortcodes === array("row")){
+				// we need to process columns of each row right here,
+				// because smarty_block_drink_shortcode__row sets up variable number_of_columns
+				$out = $this->_processBlockShortcode($transformer,$out,array("col"),$smarty);
+			}
+
+			$content = str_replace($snippet,$out,$content);
 		}
 
 		return $content;

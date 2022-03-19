@@ -147,6 +147,77 @@ class TcRowsAndCols extends TcBase {
 			</div>
 		';
 		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
+		// 1-column row
+		$src = '
+[row]
+[col]Col 1[/col]
+[/row]
+		';
+		$expected = '
+			<div class="row row--shortcode">
+				<div class="col-12 col-xs-12 col-md-12 col--shortcode">
+					<p>Col 1</p>
+				</div>
+			</div>
+		';
+		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
+		// 1-column row in a 1-column row
+		$src = '
+[row class="outer_row"]
+[col]
+[row class="inner_row"]
+[col]
+Col 1
+[/col]
+[/row]
+[/col]
+[/row]
+		';
+		$expected = '
+			<div class="row row--shortcode outer_row">
+				<div class="col-12 col-xs-12 col-md-12 col--shortcode">
+					<div class="row row--shortcode inner_row">
+						<div class="col-12 col-xs-12 col-md-12 col--shortcode">
+							<p>Col 1</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		';
+		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
+		// 2-column row in a 1-column row
+		$src = '
+[row class="outer_row"]
+[col]
+[row class="inner_row"]
+[col class="col_1"]
+Col 1
+[/col]
+[col class="col_2"]
+Col 2
+[/col]
+[/row]
+[/col]
+[/row]
+		';
+		$expected = '
+			<div class="row row--shortcode outer_row">
+				<div class="col-12 col-xs-12 col-md-12 col--shortcode">
+					<div class="row row--shortcode inner_row">
+						<div class="col-12 col-xs-12 col-md-6 col--shortcode col_1">
+							<p>Col 1</p>
+						</div>
+						<div class="col-12 col-xs-12 col-md-6 col--shortcode col_2">
+							<p>Col 2</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		';
+		$this->assertHtmlEquals($expected,$markdown->transform($src));
 	}
 
 	function _compressHtml($html){
