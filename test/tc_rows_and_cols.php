@@ -218,6 +218,50 @@ Col 2
 			</div>
 		';
 		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
+		//
+		$src = '
+[row class="outer_row"]
+
+[col class="outer_col_left"]
+[row class="inner_row_left"]
+[col class="inner_col_left"]
+Col left
+[/col]
+[/row]
+[/col]
+
+[col class="outer_col_right"]
+[row class="inner_row_right"]
+[col class="inner_col_right"]
+Col right
+[/col]
+[/row]
+[/col]
+
+[/row]
+
+		';
+		$expected = '
+			<div class="row row--shortcode outer_row">
+				<div class="col-12 col-xs-12 col-md-6 col--shortcode outer_col_left">
+					<div class="row row--shortcode inner_row_left">
+						<div class="col-12 col-xs-12 col-md-12 col--shortcode inner_col_left">
+							<p>Col left</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-xs-12 col-md-6 col--shortcode outer_col_right">
+					<div class="row row--shortcode inner_row_right">
+						<div class="col-12 col-xs-12 col-md-12 col--shortcode inner_col_right">
+							<p>Col right</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		';
+		$this->assertHtmlEquals($expected,$markdown->transform($src));
+
 	}
 
 	function _compressHtml($html){
