@@ -54,23 +54,32 @@ class DrinkMarkdown{
 		//
 		$this->smarty = $smarty;
 
+		$h = function($string){
+			$string = (string)$string;
+			$flags =  ENT_COMPAT | ENT_QUOTES;
+			if(defined("ENT_HTML401")){ $flags = $flags | ENT_HTML401; }
+			return htmlspecialchars($string,$flags,"ISO-8859-1");
+		};
+
+		$build_attrs = function($params) use($h){
+			$attrs = [];
+			foreach($params as $k => $v){
+				$attrs[] = sprintf('%s="%s"',$h($k),$h($v));
+			}
+			$attrs = $attrs ? " ".join(" ",$attrs) : "";
+			return $attrs;
+		};
+
 		if($options["shortcodes_enabled"]){
 			$this->appendPrefilter(new MarkdownShortcodesPrefilter());
 			$this->prependPostfilter(new MarkdownShortcodesPostfilter());
-			$this->registerBlockShortcode("div", function($content,$params){
-				$h = function($string){
-					$flags =  ENT_COMPAT | ENT_QUOTES;
-					if(defined("ENT_HTML401")){ $flags = $flags | ENT_HTML401; }
-					return htmlspecialchars($string,$flags,"ISO-8859-1");
-				};
-
-				$attrs = [];
-				foreach($params as $k => $v){
-					$attrs[] = sprintf('%s="%s"',$h($k),$h($v));
-				}
-				$attrs = $attrs ? " ".join(" ",$attrs) : "";
-
+			$this->registerBlockShortcode("div", function($content,$params) use($build_attrs){
+				$attrs = $build_attrs($params);
 				return "<div$attrs>\n$content\n</div>";
+			});
+			$this->registerInlineBlockShortcode("span", function($content,$params) use($build_attrs){
+				$attrs = $build_attrs($params);
+				return "<span$attrs>$content</span>";
 			});
 
 			// Smarty shortcode autowiring
