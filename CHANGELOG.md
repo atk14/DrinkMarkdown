@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.3] - 2022-05-24
+
+* 83a17b3 - Added built-in inline block shortcode [span]
+
 ## [0.8.2] - 2022-03-19
 
 * 35d9cc3 - Nested block shortcodes detection corrected
