@@ -99,6 +99,12 @@ Shortcode _div_ renders <div> element with given attributes. Unlike direct usage
 
     [/div]
 
+Inline block shortcode _span_ renders <span> element with given attributes. Again, markdown syntax is being interpreted inside the shortcode.
+
+    ## Hello [span class="world"]World[/span]!
+
+    Welcome to this very nice place.
+
 ### Custom shortcodes
 
     $dm = new DrinkMarkdown();
@@ -106,18 +112,18 @@ Shortcode _div_ renders <div> element with given attributes. Unlike direct usage
 #### 1. Callbacks
 
     $dm->registerBlockShortcode("alert", function($columns,$params){
-      $params += array(
+      $params += [
         "type" => "primary"
-      );
+      ];
       return "<div class=\"alert alert-$params[type]\" role=\"alert\">$content</div>";
     });
 
     $dm->registerInlineBlockShortcode("upper", function($content,$params){ return strtoupper($content); });
 
     $dm->registerFunctionShortcode("name", function($params){
-      $params += array(
+      $params += [
         "gender" => "male"
-      );
+      ];
       return $params["gender"]=="female" ? "Samantha Doe" : "John Doe";
     });
 
@@ -180,7 +186,7 @@ Now, everything is set and ready. The following markdown text...
 
 By default, all Smarty plugins found are registered as either function shortcodes or block shortcodes.
 
-For example, if file app/helpers/function.smarty_function_drink_shortcode__current_year.php exists, the shortcode [current_year] can be used without previous registration.
+For example, if file `app/helpers/function.drink_shortcode__current_year.php` exists, the shortcode `[current_year]` can be used without previous registration.
 
 If shortcode autowiring is not desired behaviour, it can be disabled by "shortcode_autowiring_enabled" option in the constructor.
 
