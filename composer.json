@@ -24,7 +24,7 @@
                 "atk14/core": "dev-master",
                 "atk14/functions": "dev-master",
                 "atk14/string4": "^0.3",
-                "smarty/smarty": "3.1.43",
+                "smarty/smarty": "3.1.45",
                 "atk14/xmole": "*"
         },
         "autoload": {
