@@ -260,4 +260,14 @@ line3</code></pre>';
 		$this->assertEquals('<p>Hi John Doe!</p>',$markdown->transform("Hi [name]!"));
 		$this->assertEquals('<p>Hi [upper]Samantha[/upper]</p>',$markdown->transform("Hi [upper]Samantha[/upper]"));
 	}
+
+	function test_errors_highlighting(){
+		$markdown = new DrinkMarkdown();
+
+		$this->assertEquals('<span class="bg-warning text-danger" title="opening shortcode has no closing pair">[span]</span>',$markdown->transform("[span]"));
+		$this->assertEquals('<span class="bg-warning text-danger" title="closing shortcode has no opening pair">[/span]</span>',$markdown->transform("[/span]"));
+
+		$this->assertEquals('<div class="bg-warning text-danger" title="opening shortcode has no closing pair">[div]</div>',$markdown->transform("[div]"));
+		$this->assertEquals('<div class="bg-warning text-danger" title="closing shortcode has no opening pair">[/div]</div>',$markdown->transform("[/div]"));
+	}
 }
