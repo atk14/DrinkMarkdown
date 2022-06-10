@@ -31,6 +31,9 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		$shortcodes = $transformer->getBlockShortcodes();
 		$content = $this->_processBlockShortcode($transformer,$content,$shortcodes,$smarty);
 
+		$content = $this->_highlightBlockShortcodeErrors($content,$transformer->getBlockShortcodes(),"div");
+		$content = $this->_highlightBlockShortcodeErrors($content,$transformer->getInlineBlockShortcodes(),"span");
+
 		return $content;
 	}
 
@@ -128,6 +131,24 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 			}
 		}
 
+		return $content;
+	}
+
+	protected function _highlightBlockShortcodeErrors($content,$shortcodes,$error_element){
+		if(!$shortcodes){ return $content; }
+
+		$h = function($string){
+			$string = (string)$string;
+			$flags =  ENT_COMPAT | ENT_QUOTES;
+			if(defined("ENT_HTML401")){ $flags = $flags | ENT_HTML401; }
+			return htmlspecialchars($string,$flags,"ISO-8859-1");
+		};
+
+		$shortcodes = "(".join("|",$shortcodes).")";
+		$content = preg_replace_callback('/<!-- (\/|)drink:('.$shortcodes.'\b.*?) -->/',function($matches) use($error_element,$h){
+			$title = $matches[1]=="/" ? "closing shortcode has no opening pair" : "opening shortcode has no closing pair";
+			return '<'.$error_element.' class="bg-warning text-danger" title="'.$title.'">['.$h($matches[1].$matches[2]).']</'.$error_element.'>';
+		},$content);
 		return $content;
 	}
 
