@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.4] - 2022-06-10
+
+* b2bf2fd - Missmatched block shortcodes are highlighted in the output
+
 ## [0.8.3] - 2022-05-24
 
 * 83a17b3 - Added built-in inline block shortcode [span]
