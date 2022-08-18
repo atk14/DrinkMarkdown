@@ -18,9 +18,9 @@ class MarkdownShortcodesPrefilter extends DrinkMarkdownFilter {
 			$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
 
 			if($break){
-				$raw = preg_replace('/[\r\n\s]*\[('.$shortcodes_str.'(?<params>| [^]]*))\][\r\n\s]*/s',"$break<!-- drink:\\1 -->$break",$raw);
+				$raw = preg_replace('/[\r\n\s]*\[('.$shortcodes_str.'(?<params>|\s[^]]*))\][\r\n\s]*/s',"$break<!-- drink:\\1 -->$break",$raw);
 			}else{
-				$raw = preg_replace('/\[('.$shortcodes_str.'(?<params>| [^]]*))\]/s',"<!-- drink:\\1 -->",$raw);
+				$raw = preg_replace('/\[('.$shortcodes_str.'(?<params>|\s[^]]*))\]/s',"<!-- drink:\\1 -->",$raw);
 			}
 
 		}

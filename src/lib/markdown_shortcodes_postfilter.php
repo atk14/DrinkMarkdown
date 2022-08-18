@@ -54,7 +54,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		//
 		// <!-- drink:row -->
 
-		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>(?:(?!(<!-- drink:\1 )).)*?)-->(?<source>(?:(?!(<!-- drink:\1 )).)*?)<!-- \/drink:\1 -->/s';
+		$pattern = '/<!-- drink:'.$shortcodes_str.'\s(?<params>(?:(?!(<!-- drink:\1 )).)*?)-->(?<source>(?:(?!(<!-- drink:\1 )).)*?)<!-- \/drink:\1 -->/s';
 
 		while(1){
 			if(!preg_match($pattern,$content,$matches)){
@@ -104,7 +104,7 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 		$shortcodes_str = "(?<shortcode>".join("|",$shortcodes).")";
 
-		$pattern = '/<!-- drink:'.$shortcodes_str.' (?<params>.*?)-->/s';
+		$pattern = '/<!-- drink:'.$shortcodes_str.'\s(?<params>.*?)-->/s';
 
 		while(preg_match_all($pattern,$content,$matches)){
 			foreach(array_keys($matches[0]) as $i){

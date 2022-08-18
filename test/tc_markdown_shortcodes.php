@@ -97,6 +97,10 @@ Welcome [upper][name gender="female"][/upper]!
 </div>
 		');
 		$this->assertEquals($expected,$transformer->transform($src));
+
+		$src = '[name
+gender="female"]';
+		$this->assertEquals('Samantha Doe',$transformer->transform($src));
 	}
 
 	function test_enabled_disabled(){
@@ -129,6 +133,21 @@ Welcome [upper][name gender="female"][/upper]!
 		$src = '[row][col]Hello World![/col][/row]';
 		$expected = '<p>[row][col]Hello World![/col][/row]</p>';
 		$this->assertEquals($expected,$markdown->transform($src));
+	}
+
+	function test_whitespaces_in_shortcodes(){
+		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
+		$src_ar = [
+			"[name gender=\"female\"]",
+			"[name\ngender=\"female\"]",
+			"[name\n\tgender=\"female\"]",
+			"[name\n\tgender=\"female\"\n]",
+			"[name\n\tgender=\"female\"\n\t]",
+		];
+
+		foreach($src_ar as $src){
+			$this->assertEquals("Samantha Doe",$transformer->transform($src));
+		}
 	}
 
 	function test_callbacks(){
