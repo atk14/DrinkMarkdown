@@ -16,6 +16,9 @@ function smarty_modifier_markdown($text){
 		"iobjects_processing_enabled" => true,
 		"urlize_text" => true,
 		"shortcodes_enabled" => true,
+		"link_finder_options" => [
+			"secured_websites" => true,
+		],
 	));
 
 	return $markdown->transform($text);

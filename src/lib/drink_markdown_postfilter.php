@@ -8,6 +8,7 @@ class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 			"temp_dir" => defined(TEMP) ? TEMP : sys_get_temp_dir(),
 			"iobjects_processing_enabled" => true,
 			"urlize_text" => true,
+			"link_finder_options" => [],
 		);
 
 		$this->options = $options;
@@ -53,7 +54,7 @@ class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 			}
 			$content = EasyReplace($content,$replace_ar);
 
-			$lf = new LinkFinder();
+			$lf = new LinkFinder($this->options["link_finder_options"]);
 			$content = $lf->process($content,array("escape_html_entities" => false));
 
 			if($replace_ar){
