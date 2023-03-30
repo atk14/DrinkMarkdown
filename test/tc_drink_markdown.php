@@ -8,9 +8,9 @@ class TcDrinkMarkdown extends TcBase{
 
 		// Links
 		
-		$this->assertEquals('<p>Welcome at <a href="http://www.earth.net">www.earth.net</a>!</p>',$dm->transform('Welcome at www.earth.net!'));
+		$this->assertEquals('<p>Welcome at <a href="https://www.earth.net">www.earth.net</a>!</p>',$dm->transform('Welcome at www.earth.net!'));
 
-		$this->assertEquals('<p>Contact as on <a href="http://www.earth.net">www.earth.net</a><br />
+		$this->assertEquals('<p>Contact as on <a href="https://www.earth.net">www.earth.net</a><br />
 or <a href="mailto:we@earth.net">we@earth.net</a></p>',$dm->transform("Contact as on www.earth.net  \nor we@earth.net"));
 
 		// Text centering
