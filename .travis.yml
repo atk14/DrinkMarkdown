@@ -10,23 +10,36 @@ jobs:
   include:
     - php: 5.6
       dist: xenial
+      before_install:
+        - composer update --dev
     - php: 7.0
       dist: xenial
+      before_install:
+        - composer update --dev
     - php: 7.1
       dist: xenial
+      before_install:
+        - composer update --dev
     - php: 7.2
       dist: xenial
+      before_install:
+        - composer update --dev
     - php: 7.3
       dist: xenial
+      before_install:
+        - composer update --dev
     - php: 7.4
       dist: focal
+      before_install:
+        - composer update --dev
     - php: 8.0
       dist: focal
+      before_install:
+        - composer update --dev --ignore-platform-reqs
     - php: 8.1
       dist: focal
-
-before_install:
-  - composer update --dev
+      before_install:
+        - composer update --dev --ignore-platform-reqs
 
 script:
   - cd test && ../vendor/bin/run_unit_tests
