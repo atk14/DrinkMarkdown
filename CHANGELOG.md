@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.5] - 2023-12-06
+
+* f836501 - A shortcode can be written in multiple lines
+* 6f7c2eb - Fix for PHP 8.2
+
 ## [0.8.4] - 2022-06-10
 
 * b2bf2fd - Missmatched block shortcodes are highlighted in the output
