@@ -6,7 +6,7 @@ class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 			"keep_html_tables_unmodified" => true
 		);
 
-		$this->options = $options;
+		parent::__construct($options);
 	}
 
 	function filter($raw,$transformer){

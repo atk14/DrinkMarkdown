@@ -10,7 +10,7 @@ class DrinkMarkdownPostfilter extends DrinkMarkdownFilter {
 			"urlize_text" => true,
 		);
 
-		$this->options = $options;
+		parent::__construct($options);
 	}
 
 	function filter($content,$transformer){

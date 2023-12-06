@@ -4,6 +4,12 @@
  */
 class DrinkMarkdownFilter {
 
+	protected $options;
+
+	function __construct($options = array()){
+		$this->options = $options;
+	}
+
 	/**
 	 * Filter method
 	 */
