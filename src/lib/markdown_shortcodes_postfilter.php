@@ -54,7 +54,13 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 		//
 		// <!-- drink:row -->
 
-		$pattern = '/<!-- drink:'.$shortcodes_str.'\s(?<params>(?:(?!(<!-- drink:\1 )).)*?)-->(?<source>(?:(?!(<!-- drink:\1 )).)*?)<!-- \/drink:\1 -->/s';
+		// We need to set pcre.jit to 0.
+		// Without it, the test TcIsse::test() fails.
+		$pcre_jit_orig = ini_get("pcre.jit");
+		ini_set("pcre.jit",0);
+
+		//$pattern = '/<!-- drink:'.$shortcodes_str.'\s(?<params>(?:(?!(<!-- drink:\1 )).)*?)-->(?<source>(?:(?!(<!-- drink:\1 )).)*?)<!-- \/drink:\1 -->/s';
+		$pattern = '/<!-- drink:'.$shortcodes_str.'\s(?<params>(?:(?!(-->)).)*?)-->(?<source>(?:(?!(<!-- drink:\1)).)*?)<!-- \/drink:\1 -->/s';
 
 		while(1){
 			if(!preg_match($pattern,$content,$matches)){
@@ -93,6 +99,8 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 
 			$content = str_replace($snippet,$out,$content);
 		}
+
+		ini_set("pcre.jit",$pcre_jit_orig);
 
 		return $content;
 	}
