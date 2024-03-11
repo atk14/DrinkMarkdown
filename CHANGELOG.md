@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.6] - 2024-03-11
+
+* 808ae53 - Fixed transformation of very long source text (pcre.jit must be set to 0)
+
 ## [0.8.5] - 2023-12-06
 
 * f836501 - A shortcode can be written in multiple lines
