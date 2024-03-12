@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.7] - 2024-03-11
+
+* dfeb91c - Fix - returned previous regular pattern
+
 ## [0.8.6] - 2024-03-11
 
 * 808ae53 - Fixed transformation of very long source text (pcre.jit must be set to 0)
