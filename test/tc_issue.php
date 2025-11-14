@@ -31,6 +31,6 @@ class TcIssue extends TcBase {
 
 		$output = $markdown->transform($source);
 
-		$this->assertContains('<div class="row row--shortcode">',substr($output,0,1000));
+		$this->assertStringContains('<div class="row row--shortcode">',substr($output,0,1000));
 	}
 }
