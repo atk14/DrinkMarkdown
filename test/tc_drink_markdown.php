@@ -346,9 +346,10 @@ Paragraph #2
 		$result = trim('
 <p>Paragraph #1</p>
 
-<pre><span style="color: #000066; font-weight: bold;">function</span> helloWorld<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-  alert<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;Hello World!&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+<pre>
+<span><span style="font-weight: bold;">function</span> <span style="color: #880000; font-weight: bold;">helloWorld</span>(<span></span>)</span>{
+  alert(<span style="color: #880000;">"Hello World!"</span>);
+}</pre>
 
 <p>Paragraph #2</p>');
 
