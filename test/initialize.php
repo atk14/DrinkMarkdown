@@ -5,9 +5,10 @@ define("DEVELOPMENT",false);
 define("PRODUCTION",false);
 define("ATK14_DOCUMENT_ROOT",__DIR__ . "/");
 
+$PHP_VERSION = PHP_MAJOR_VERSION + PHP_MINOR_VERSION/10.0; // 7.0, 7.1...
 define("ATK14_USE_INTERNAL_SMARTY",false);
-define("ATK14_USE_SMARTY3",false);
-define("ATK14_USE_SMARTY4",true);
+define("ATK14_USE_SMARTY3",$PHP_VERSION<=7.1);
+define("ATK14_USE_SMARTY4",$PHP_VERSION>7.1);
 define("ATK14_USE_SMARTY5",false);
 define("ATK14_SMARTY_DEFAULT_MODIFIER",'h');
 define("ATK14_SMARTY_DIR_PERMS",0755);
