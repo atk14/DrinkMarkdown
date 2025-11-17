@@ -80,7 +80,9 @@ class DrinkMarkdownFilter {
 			}
 			catch (DomainException $e) {
 				// This is thrown if the specified language does not exist
+				$source = htmlentities($source);
 			}
+
 			$source = "<pre>$source</pre>";
 		}else{
 			$source = '<pre><code>'.htmlentities($source).'</code></pre>';
