@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.8] - 2025-11-17
+
+* edb7c46 - [scrivo/highlight.php] Package geshi/geshi replaced with scrivo/highlight.php (and tijsverkoyen/css-to-inline-styles)
+
 ## [0.8.7] - 2024-03-11
 
 * dfeb91c - Fix - returned previous regular pattern
