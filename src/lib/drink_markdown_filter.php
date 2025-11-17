@@ -51,18 +51,37 @@ class DrinkMarkdownFilter {
 	 *	$source = $this->formatSourceCode($raw_source,array("lang" => "php"));
 	 */
 	function formatSourceCode($source,$options = array()){
+		static $css;
+
+		if(!$css){
+			$css = file_get_contents(__DIR__ . "/../public/styles/highlight.php/default.css");
+		}
+
 		$options += array(
 			"lang" => ""
 		);
 
 		if(strlen($options["lang"])){
-			$geshi = new GeSHi($source, $options["lang"]);
-			$geshi->enable_keyword_links(false);
-			$geshi->set_overall_style("");
-			$geshi->enable_classes(false);
-			$source = @$geshi->parse_code(); // There is an error in GeSHi: Undefined offset: 0 in /path/to/an/app/vendor/easybook/geshi/geshi.php:3500
+			$hl = new \Highlight\Highlighter();
+			
+			try {
+				// Source code highlighting
+				$highlighted = $hl->highlight($options["lang"], $source);
+				$source = $highlighted->value;
 
-			$source = preg_replace('/^<pre class="[^"]+"/','<pre',$source); // '<pre class="javascript">' -> '<pre>'
+				// CSS inliner
+				$css_inliner = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles();
+				$source = $css_inliner->convert(
+					$source,
+					$css
+				);
+				$source = preg_replace('/^.*?<body>(.*)<\/body><\/html>$/s','\1',$source);
+				$source = preg_replace('/ class="[^"]*"/','',$source);
+			}
+			catch (DomainException $e) {
+				// This is thrown if the specified language does not exist
+			}
+			$source = "<pre>$source</pre>";
 		}else{
 			$source = '<pre><code>'.htmlentities($source).'</code></pre>';
 		}

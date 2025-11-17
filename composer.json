@@ -14,6 +14,7 @@
         "require": {
                 "php": ">=5.3.0",
                 "scrivo/highlight.php": "^9.18.1",
+                "tijsverkoyen/css-to-inline-styles": "^2.2",
                 "michelf/php-markdown": "1.7.*|1.8.*|1.9.*",
                 "ezyang/htmlpurifier": ">=4.8|<=4.13",
                 "yarri/link-finder": "2.*",
