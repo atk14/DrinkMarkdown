@@ -28,7 +28,7 @@ Files::Mkdir(__DIR__ . "/tmp/smarty/".posix_getpid()."/templates_c");
 Files::Mkdir(__DIR__ . "/tmp/smarty/".posix_getpid()."/cache");
 
 
-$ATK14_GLOBAL = new Atk14Global();
+$ATK14_GLOBAL = Atk14Global::GetInstance();
 
 require(__DIR__ . "/iobject.php");
 require(__DIR__ . "/image.php");
