@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.10] - 2026-02-05
+
+* 83cdef4 - Block shortcode col improved
+
 ## [0.8.9] - 2025-11-17
 
 * 1c906e4 - Fix
