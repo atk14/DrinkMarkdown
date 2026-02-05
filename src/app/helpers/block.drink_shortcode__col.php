@@ -5,6 +5,7 @@ function smarty_block_drink_shortcode__col($params,$content,$template,&$repeat){
 	$params += [
 		"order" => 0,
 		"class" => "",
+		"defaultclasses" => true,
 	];
 
 	foreach($params as $k => $v){
