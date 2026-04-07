@@ -24,7 +24,7 @@ class DrinkMarkdownPrefilter extends DrinkMarkdownFilter {
 		$uniqid = uniqid();
 
 		// Source codes wrapped in ```...```
-		preg_match_all('/[\n\r]```([ a-z0-9]*)\n(.*?)\n```\s*\n/s',$raw,$matches);
+		preg_match_all('/^```([ a-z0-9]*)\n(.*?)\n```\s*$/sm',$raw,$matches);
 		for($i=0;$i<sizeof($matches[0]);$i++){
 			$snippet = $matches[0][$i];
 			$source = $this->formatSourceCode($matches[2][$i],array("lang" => $matches[1][$i]));

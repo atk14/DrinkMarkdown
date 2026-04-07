@@ -357,19 +357,19 @@ Paragraph #2
 
 
 		$src = '
-```
+```text
 Code snippet #1
 ```
 
-```
+```text
 Code snippet #2
 ```
 		';
 
 		$result = trim('
-<pre><code>Code snippet #1</code></pre>
+<pre>Code snippet #1</pre>
 
-<pre><code>Code snippet #2</code></pre>
+<pre>Code snippet #2</pre>
 		');
 
 		$this->assertHtmlEquals($result,$dm->transform($src));
