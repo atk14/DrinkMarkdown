@@ -355,6 +355,25 @@ Paragraph #2
 
 		$this->assertHtmlEquals($result,$dm->transform($src));
 
+
+		$src = '
+```
+Code snippet #1
+```
+
+```
+Code snippet #2
+```
+		';
+
+		$result = trim('
+<pre><code>Code snippet #1</code></pre>
+
+<pre><code>Code snippet #2</code></pre>
+		');
+
+		$this->assertHtmlEquals($result,$dm->transform($src));
+
 		// HTML Purifier
 
 		$dm2 = new DrinkMarkdown(array("html_purification_enabled" => false));
