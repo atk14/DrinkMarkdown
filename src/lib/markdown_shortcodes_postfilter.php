@@ -4,7 +4,6 @@ class MarkdownShortcodesPostfilter extends DrinkMarkdownFilter {
 	function filter($content,$transformer){
 
 		$replaces = $transformer->replaces;
-		$replaces["test"] = "test";
 
 		// ARRAY_FILTER_USE_KEY doesn't exist in PHP5.5
 		//$replaces = array_filter($replaces,function($k){ return !!preg_match('/drink:_content_replacement_/',$k);},ARRAY_FILTER_USE_KEY);
