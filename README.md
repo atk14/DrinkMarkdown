@@ -1,6 +1,8 @@
 DrinkMarkdown
 =============
 
+[![Tests](https://github.com/atk14/DrinkMarkdown/actions/workflows/tests.yml/badge.svg)](https://github.com/atk14/DrinkMarkdown/actions/workflows/tests.yml)
+
 Extended PHP Markdown parser tuned for usage in ATK14 projects. It's built on Michel Fortin's PHP Markdown Extra.
 
 Originally it was developed for the project "Doctor Ink" (shortly "Drink").
