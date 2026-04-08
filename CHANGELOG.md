@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.11] - 2026-04-08
+
+* 3bece91 - Detection of two consecutive source code snippets fixed
+
 ## [0.8.10] - 2026-02-05
 
 * 83cdef4 - Block shortcode col improved
