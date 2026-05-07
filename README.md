@@ -7,7 +7,7 @@ Extended PHP Markdown parser tuned for usage in ATK14 projects. It's built on Mi
 
 Originally it was developed for the project "Doctor Ink" (shortly "Drink").
 
-Beware! It is in alpha state. It has some interconnections to the ATK14 Framework thus it can't be easily used in other projects.
+Beware! It has some interconnections to the ATK14 Framework thus it can't be easily used in other projects.
 
 Features
 --------
