@@ -4,6 +4,7 @@ function smarty_block_drink_shortcode__row($params,$content,$template,&$repeat){
 
 	$params += [
 		"class" => "",
+		"style" => "",
 	];
 
 	foreach($params as $k => $v){

@@ -11,6 +11,6 @@
 {/if}
 
 {/trim}{/if}
-<div class="{$col_classes} col--shortcode{if $class} {$class}{/if}" style="order: {$order};">
+<div class="{$col_classes} col--shortcode{if $class} {$class}{/if}" style="order: {$order};{if $style} {$style}{/if}">
 {!$content}
 </div>
