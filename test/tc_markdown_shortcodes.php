@@ -294,14 +294,14 @@ line3</code></pre>';
 		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
 
 		$src = trim('
-[row style="background-color: #FF0000;"]
+[row class="wrap" style="background-color: #FF0000;"]
 [col class="first" style="background-color: #00FF00;"]This is the first column.[/col]
 [col class="second" style="background-color: #0000FF;"]This is the second column.[/col]
 [/row]
 		');
 
 		$expected = trim('
-<div class="row row--shortcode" style="background-color:#FF0000;">
+<div class="row row--shortcode wrap" style="background-color:#FF0000;">
 
 
 <div class="col-12 col-xs-12 col-md-6 col--shortcode first" style="background-color:#00FF00;">
