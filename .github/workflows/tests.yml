@@ -39,6 +39,8 @@ jobs:
 
       - name: Install dependencies
         run: composer update
+        env:
+          COMPOSER_NO_BLOCKING: 1
 
       - name: Run tests
         run: cd test && ../vendor/bin/run_unit_tests
