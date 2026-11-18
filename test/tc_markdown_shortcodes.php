@@ -289,4 +289,43 @@ line3</code></pre>';
 		$this->assertEquals('<div class="bg-warning text-danger" title="opening shortcode has no closing pair">[div]</div>',$markdown->transform("[div]"));
 		$this->assertEquals('<div class="bg-warning text-danger" title="closing shortcode has no opening pair">[/div]</div>',$markdown->transform("[/div]"));
 	}
+
+	function test_shortcode_col_and_row(){
+		$transformer = new DrinkMarkdown(array("shortcodes_enabled" => true));
+
+		$src = trim('
+[row style="background-color: #FF0000;"]
+[col class="first" style="background-color: #00FF00;"]This is the first column.[/col]
+[col class="second" style="background-color: #0000FF;"]This is the second column.[/col]
+[/row]
+		');
+
+		$expected = trim('
+<div class="row row--shortcode" style="background-color:#FF0000;">
+
+
+<div class="col-12 col-xs-12 col-md-6 col--shortcode first" style="background-color:#00FF00;">
+
+
+<p>This is the first column.</p>
+
+
+</div>
+
+
+<div class="col-12 col-xs-12 col-md-6 col--shortcode second" style="background-color:#0000FF;">
+
+
+<p>This is the second column.</p>
+
+
+</div>
+
+
+
+</div>
+		');
+
+		$this->assertEquals($expected,$transformer->transform($src));
+	}
 }
