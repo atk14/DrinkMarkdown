@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.8.12] - 2026-11-18
+
+* 48bc610 - Package is compatible with PHP>=7.1
+* dd7fd6f - Added new option "style" do shortcodes row and col
+
 ## [0.8.11] - 2026-04-08
 
 * 3bece91 - Detection of two consecutive source code snippets fixed
